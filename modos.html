@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>IPsec: Título da Página</title>
+		<link rel="stylesheet" href="estilo.css" />
+	</head>
+	<body>
+		<header class="main-header">
+			<h1>IPsec: Segurança na Camada de Rede</h1>
+			<nav class="top-nav">
+				<ul>
+					<li><a href="index.html">Introdução</a></li>
+                    <li><a href="fundamentos.html">Fundamentos da Segurança em Rede</a></li>
+					<li><a href="arquitetura.html">Arquitetura</a></li>
+					<li><a href="modos.html">Modos de Operação</a></li>
+					<li><a href="protocolos.html">Protocolos AH & ESP</a></li>
+					<li><a href="ikev2.html">IKEv2</a></li>
+					<li><a href="implementacoes.html">Implementações</a></li>
+					<li><a href="conclusao.html">Conclusão</a></li>
+				</ul>
+			</nav>
+		</header>
+
+		<div class="page-container">
+			<aside class="side-toc">
+				<h2>Nesta Página</h2>
+				<nav>
+					<ul>
+						<li>
+							<a href="#modos-de-opera-o">Modos de Operação</a>
+						</li>
+						<li><a href="#modo-transporte">Modo Transporte</a></li>
+						<li><a href="#modo-tunel">Modo Tunel</a></li>
+						<li>
+							<a href="#conclusao-modos"
+								>Conclusão: Uma Decisão Arquitetural</a
+							>
+						</li>
+					</ul>
+				</nav>
+			</aside>
+
+			<main class="main-content">
+				<h2 id="modos-de-opera-o">Modos de Operação</h2>
+				<p>
+					Após a arquitetura definir que um pacote deve ser protegido,
+					a próxima pergunta é: como essa proteção será aplicada? O
+					IPsec oferece duas respostas fundamentais para isso,
+					conhecidas como modos de operação, que definem o escopo da
+					proteção: <b>modo transporte</b> e <b>modo túnel</b>.
+				</p>
+				<p>
+					Há quatro combinações possíveis de modos e protocolos no
+					IPsec:
+				</p>
+				<ol>
+					<b><li>AH em modo transporte</li></b>
+					<b><li>AH em modo túnel</li></b>
+					<b><li>ESP em modo transporte</li></b>
+					<b><li>ESP em modo túnel</li></b>
+				</ol>
+				<p>
+					Na prática, AH em modo túnel raramente é usado, pois protege
+					essencialmente os mesmos dados que o AH em modo transporte.
+				</p>
+				<blockquote>
+					<span style="color: red">IMPORTANTE:</span> Os cabeçalhos AH
+					e ESP não mudam entre os modos transporte e túnel.
+					<p>
+						A diferença entre os modos é semântica, ou seja, o que
+						está sendo protegido:
+					</p>
+					<ul>
+						<li>
+							No modo transporte, protege-se a carga útil
+							(payload) do pacote IP original.
+						</li>
+						<li>
+							No modo túnel, protege-se todo o pacote IP original,
+							que é encapsulado dentro de um novo pacote IP.
+						</li>
+					</ul>
+					<p>
+						As diretrizes para escolher o modo adequado e exemplos
+						práticos de uso do IPsec em diferentes configurações são
+						discutidos abaixo.
+					</p>
+				</blockquote>
+				<h2 id="modo-transporte">Modo Transporte</h2>
+				<p>
+					O Modo Transporte é o modo mais simples do IPsec. Seu
+					objetivo é proteger o
+					<b>payload da camada de transporte</b>, ou seja, os dados
+					gerados por protocolos como TCP e UDP, sem alterar o
+					cabeçalho IP original.
+				</p>
+				<p>
+					Neste modo, o IPsec atua como uma camada de segurança que
+					intercepta os pacotes que fluem da camada de transporte para
+					a camada de rede. Ele insere um cabeçalho IPsec (AH ou ESP)
+					diretamente após o cabeçalho IP original e antes do
+					cabeçalho de transporte, protegendo assim todo o conteúdo
+					que vem depois dele.
+				</p>
+				<h4 id="caso-de-uso-principal-seguran-a-fim-a-fim">
+					Caso de Uso Principal: Segurança Fim-a-Fim
+				</h4>
+				<p>
+					O Modo Transporte é utilizado exclusivamente quando a
+					comunicação segura é desejada de
+					<b>ponta a ponta (fim-a-fim)</b>, ou seja, entre os dois
+					hosts que estão efetivamente originando e consumindo os
+					dados.
+				</p>
+				<p>
+					Por exemplo, considere dois hosts, A e B, que precisam
+					trocar informações sensíveis diretamente pela internet. Eles
+					podem configurar o IPsec em Modo Transporte para garantir
+					que todo o tráfego TCP/UDP entre eles seja protegido.
+				</p>
+				<img
+					src="img/transport-mode.png"
+					alt="Hosts with transport ESP"
+				/>
+				<p>
+					A razão para essa limitação é que os roteadores na internet
+					tomam suas decisões de roteamento com base no cabeçalho IP.
+					Eles não devem (e geralmente não podem) inspecionar ou
+					modificar o conteúdo que vem depois dele. O Modo Transporte,
+					ao preservar o cabeçalho IP original, é perfeitamente
+					compatível com o roteamento padrão da internet.
+				</p>
+				<h4 id="estrutura-do-pacote-transporte">Estrutura do Pacote</h4>
+				<p>
+					Para visualizar o impacto do Modo Transporte, compare a
+					estrutura de um pacote TCP/IP comum com a de um pacote
+					protegido com ESP:
+				</p>
+				<p><b>Pacote TCP/IP Padrão:</b></p>
+				<p>[ Cabeçalho IP ] [ Cabeçalho TCP ] [ Dados da Aplicação ]</p>
+				<p><b>Pacote Protegido com ESP em Modo Transporte:</b></p>
+				<p>
+					[ Cabeçalho IP ] [ Cabeçalho ESP ] [ Cabeçalho TCP ] [ Dados
+					da Aplicação ]
+				</p>
+				<p>
+					Como se pode ver, o cabeçalho ESP é inserido para proteger o
+					segmento TCP e os dados, enquanto o cabeçalho IP original
+					permanece intacto e exposto.
+				</p>
+				<h4>Vantagens e Desvantagens</h4>
+				<li>
+					<b>Vantagem:</b> Adiciona menos overhead (bytes extras) ao
+					pacote em comparação com o Modo Túnel, pois não necessita de
+					um novo cabeçalho IP.
+				</li>
+				<li>
+					<b>Desvantagem:</b> Os endereços IP de origem e destino
+					originais são preservados no cabeçalho externo, o que
+					significa que os metadados da comunicação (quem está falando
+					com quem) ficam expostos na rede.
+				</li>
+				<h2 id="modo-tunel">Modo Túnel</h2>
+				<p>
+					Enquanto o Modo Transporte protege o conteúdo, o Modo Túnel
+					protege o contexto da comunicação. Seu objetivo é
+					<b>encapsular o pacote IP inteiro</b>, tratando-o como um
+					bloco de dados que será inserido dentro de um novo pacote
+					IP.
+				</p>
+				<p>
+					Este modo é a base para a criação de Redes Privadas Virtuais
+					(VPNs), pois é utilizado quando o ponto de terminação da
+					segurança (onde o IPsec é aplicado) é diferente do destino
+					final do pacote. Outra caso em que é usado é quando o
+					roteador é quem provê IPsec ao contrário de um Host.
+				</p>
+				<img
+					src="https://placehold.co/715x233/2a2a2a/999999?text=Estrutura de Pacote em Modo Tunel"
+					alt="Estrutura de Pacote em Modo Túnel"
+				/>
+				<h4 id="estrutura-do-pacote-tunel">Estrutura do Pacote</h4>
+				<p>
+					Para visualizar o impacto do Modo Tunel, compare a estrutura
+					de um pacote TCP/IP comum com a de um pacote protegido com
+					ESP:
+				</p>
+				<p><b>Pacote TCP/IP Padrão:</b></p>
+				<p>[ Cabeçalho IP ] [ Cabeçalho TCP ] [ Dados da Aplicação ]</p>
+				<p><b>Pacote Protegido com ESP em Modo Transporte:</b></p>
+				<p>
+					[ Cabeçalho IP ] [ Cabeçalho ESP ] [ Cabeçalho TCP ] [ Dados
+					da Aplicação ]
+				</p>
+				<p><b>Pacote Protegido com ESP em Modo Tunel:</b></p>
+				<p>
+					[Cabeçalho Novo IP] [ Cabeçalho ESP ] [ Cabeçalho IP
+					Original] [ Cabeçalho TCP ] [ Dados da Aplicação ]
+				</p>
+				<p>
+					Como se pode ver, dessa vez o cabeçalho ESP é inserido para
+					proteger <b>todo o datagrama original</b> ao invés de apenas
+					os dados (como é feito no modo transporte).
+				</p>
+				<h3>Caso de Uso Principal: VPNs Gateway-to-Gateway</h3>
+				<p>
+					O cenário mais comum para o Modo Túnel é a interconexão de
+					duas redes privadas através da internet. Um dispositivo de
+					segurança, como um roteador ou firewall em cada ponta, atua
+					como um "gateway", provendo os serviços do IPsec em nome de
+					todos os hosts da rede que ele protege.
+				</p>
+				<img
+					src="https://placehold.co/715x233/2a2a2a/999999?text=Cenario Gateway-to-Gateway (VPN)"
+					alt="Cenário Gateway-to-Gateway (VPN)"
+				/>
+				<p>
+					Neste caso, o Host A envia um pacote normal para o Host B. O
+					roteador RA intercepta esse pacote, o encapsula usando IPsec
+					em Modo Túnel e o envia para RB. RB, ao receber,
+					desencapsula o pacote e entrega o pacote IP original para o
+					Host B.
+				</p>
+				<h4>Vantagens e Desvantagens</h4>
+				<li>
+					<b>Vantagem:</b> Oferece o mais alto nível de segurança,
+					pois oculta a topologia da rede interna. Um observador na
+					internet só consegue ver o tráfego entre os gateways (RA e
+					RB no nosso exemplo), sem saber quais hosts (A e B) estão
+					realmente se comunicando.
+				</li>
+				<li>
+					<b>Desvantagem:</b> Possui um overhead maior, já que
+					adiciona um cabeçalho IP completo (pelo menos 20 bytes) a
+					cada pacote.
+				</li>
+				<blockquote>
+					<b>Nota sobre o uso Fim-a-Fim:</b> Um host pode,
+					tecnicamente, usar o Modo Túnel para se comunicar com outro
+					host. No entanto, se os dois pontos da comunicação são os
+					próprios hosts, o Modo Transporte é sempre preferível, pois
+					oferece a proteção do payload com menos overhead, sem a
+					necessidade do cabeçalho IP extra.
+				</blockquote>
+				<blockquote>
+					<b>Nota sobre Túneis Aninhados:</b> A arquitetura IPsec
+					permite configurações avançadas, como a criação de "túneis
+					aninhados" (um túnel dentro de outro, como um túnel AH
+					dentro de um túnel ESP). No entanto, essas configurações são
+					complexas, aumentam significativamente o overhead e são
+					propensas a erros de roteamento, devendo ser usadas com
+					cautela e apenas em cenários muito específicos.
+				</blockquote>
+				<h2 id="conclusao-modos">
+					Conclusão: Uma Decisão Arquitetural
+				</h2>
+				<p>
+					A escolha entre o Modo Transporte e o Modo Túnel é uma das
+					decisões mais fundamentais ao se projetar uma solução com
+					IPsec. A decisão reflete diretamente o objetivo da proteção:
+					<li>
+						O <b>Modo Transporte</b> é a escolha eficiente para
+						proteger o conteúdo da comunicação entre dois pontos
+						finais que já se conhecem e confiam na visibilidade de
+						seus endereços.
+					</li>
+					<li>
+						O <b>Modo Túnel</b> é a escolha robusta para proteger
+						tanto o conteúdo quanto o contexto (a identidade dos
+						comunicantes), sendo a tecnologia essencial por trás das
+						VPNs que conectam redes de forma segura.
+					</li>
+				</p>
+				<p>
+					Agora que compreendemos os dois "envelopes" que o IPsec pode
+					usar para transportar os dados, é hora de analisar em
+					detalhe o que vai dentro desses envelopes. A próxima página
+					mergulhará nos protocolos que aplicam a segurança: o
+					<b>Authentication Header (AH)</b> e o
+					<b>Encapsulating Security Payload (ESP)</b>.
+				</p>
+			</main>
+		</div>
+	</body>
+</html>

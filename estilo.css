@@ -1,0 +1,166 @@
+/* ---- VARIÁVEIS DE COR (para facilitar a customização) ---- */
+:root {
+    --bg-color: #1a1a1a;        /* Fundo escuro */
+    --text-color: #cccccc;      /* Texto principal cinza claro */
+    --header-bg: #111111;       /* Fundo do cabeçalho um pouco mais escuro */
+    --border-color: #444444;    /* Cor da borda */
+    --link-color: #8ab4f8;      /* Cor do link (azul claro) */
+    --link-hover: #ffffff;      /* Cor do link ao passar o mouse */
+    --heading-color: #e8eaed;   /* Cor dos títulos */
+    --code-bg: #282c34;         /* Fundo dos blocos de código */
+}
+
+/* ---- RESET BÁSICO E ESTILOS GERAIS ---- */
+body {
+    font-family: 'Georgia', 'Times New Roman', Times, serif; /* Fonte serifada para leitura longa */
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* ---- CABEÇALHO SUPERIOR ---- */
+.main-header {
+    background-color: var(--header-bg);
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.main-header h1 {
+    color: var(--heading-color);
+    margin: 0;
+    font-size: 2rem;
+}
+
+.top-nav ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 0.5rem;
+}
+
+.top-nav ul li {
+    display: inline-block;
+    margin: 0 15px;
+}
+
+/* ---- LAYOUT DA PÁGINA (Conteúdo Principal + Barra Lateral) ---- */
+.page-container {
+    display: flex;
+    max-width: 1400px;
+    margin: 2rem auto; /* Centraliza o container */
+}
+
+/* ---- BARRA LATERAL (ÍNDICE) ---- */
+.side-toc {
+    flex: 0 0 250px; /* Não cresce, não encolhe, base de 250px */
+    padding-right: 2rem;
+    border-right: 1px solid var(--border-color);
+    height: 100vh; /* Ocupa a altura da tela */
+    position: sticky; /* Fica fixo ao rolar a página */
+    top: 0;
+}
+
+.side-toc h2 {
+    color: var(--heading-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.side-toc ul {
+    list-style: none;
+    padding: 0;
+}
+
+.side-toc ul li {
+    margin-bottom: 0.8rem;
+}
+
+/* ---- CONTEÚDO PRINCIPAL ---- */
+.main-content {
+    flex: 1; /* Ocupa o espaço restante */
+    padding: 0 2rem;
+}
+
+.main-content h2 {
+    color: var(--heading-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+    margin-top: 2.5rem; /* Espaçamento entre seções */
+}
+
+.main-content h2:first-of-type {
+    margin-top: 0; /* Remove o espaço extra do primeiro título */
+}
+
+/* ---- ESTILOS DE TEXTO E LINKS ---- */
+a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--link-hover);
+    text-decoration: underline;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+/* ---- ESTILO PARA CÓDIGO E DIAGRAMAS ASCII ---- */
+pre {
+    background-color: var(--code-bg);
+    padding: 1rem;
+    border-radius: 5px;
+    white-space: pre-wrap; /* Quebra linha em blocos de código grandes */
+    overflow-x: auto;
+}
+
+code {
+    font-family: 'Courier New', Courier, monospace;
+}
+/* ---- ESTILO PARA CITAÇÕES / BLOCOS DESTACADOS ---- */
+blockquote {
+    border-left: 4px solid var(--link-color); /* Cria a barra vertical na cor do link */
+    padding-left: 1.5rem;   /* Adiciona espaço entre a barra e o texto */
+    margin-left: 0;         /* Remove margens padrão para alinhar bem */
+    margin-right: 0;
+    font-style: italic;     /* Opcional: deixa o texto em itálico para diferenciar */
+    color: #e0e0e0;         /* Opcional: um tom de branco um pouco mais brilhante para o texto */
+}
+/* ---- ESTILO GERAL PARA IMAGENS ---- */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;     /* PASSO 1: Transforma a imagem em um elemento de bloco */
+    margin: 2rem auto;  /* PASSO 2: Define margens automáticas para esquerda/direita */
+    border-radius: 5px;
+}
+/* ---- ESTILOS PARA TABELAS ---- */
+table {
+    width: 100%;                     /* Faz a tabela ocupar toda a largura disponível */
+    border-collapse: collapse;       /* Une as bordas das células para um visual limpo, em vez de bordas duplas */
+    margin: 2rem 0;                  /* Adiciona espaço vertical antes e depois da tabela */
+    font-size: 0.95rem;              /* Levemente menor para caber mais informação */
+}
+
+/* Estilo para todas as células (cabeçalho e dados) */
+th, td {
+    border: 1px solid var(--border-color); /* Adiciona uma borda sutil e consistente */
+    padding: 0.75rem 1rem;           /* Espaçamento interno para o conteúdo não ficar colado na borda */
+    text-align: left;                /* Alinha o texto à esquerda para melhor leitura */
+}
+
+/* Estilo específico para o cabeçalho da tabela */
+thead th {
+    background-color: var(--code-bg); /* Usa a mesma cor de fundo dos blocos de código para destacar */
+    color: var(--heading-color);        /* Usa a cor dos títulos para o texto do cabeçalho */
+    font-weight: bold;                  /* Deixa o texto em negrito */
+}
+
+/* Efeito "Zebra" - cor alternada para as linhas do corpo da tabela */
+tbody tr:nth-child(even) {
+    background-color: var(--header-bg); /* Deixa as linhas pares um pouco mais escuras para facilitar a leitura */
+}

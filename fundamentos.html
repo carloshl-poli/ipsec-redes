@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>IPsec: Título da Página</title>
+		<link rel="stylesheet" href="estilo.css" />
+	</head>
+	<body>
+		<header class="main-header">
+			<h1>IPsec: Segurança na Camada de Rede</h1>
+			<nav class="top-nav">
+				<ul>
+					<li><a href="index.html">Introdução</a></li>
+					<li><a href="fundamentos.html">Fundamentos da Segurança em Rede</a></li>
+					<li><a href="arquitetura.html">Arquitetura</a></li>
+					<li><a href="modos.html">Modos de Operação</a></li>
+					<li><a href="protocolos.html">Protocolos AH & ESP</a></li>
+					<li><a href="ikev2.html">IKEv2</a></li>
+					<li><a href="implementacoes.html">Implementações</a></li>
+					<li><a href="conclusao.html">Conclusão</a></li>
+				</ul>
+			</nav>
+		</header>
+
+		<div class="page-container">
+			<aside class="side-toc">
+				<h2>Nesta Página</h2>
+				<nav>
+					<ul>
+						<li>
+							<a href="#objetivos-seguranca"
+								>Objetivos da Segurança</a
+							>
+						</li>
+						<li>
+							<a href="#fundamentos-cripto"
+								>Fundamentos da Criptografia</a
+							>
+							<ul>
+								<li>
+									<a href="#one-way-functions"
+										>Funções de Mão Única</a
+									>
+								</li>
+								<li>
+									<a href="#cifras"
+										>Confidencialidade com Cifras</a
+									>
+								</li>
+								<li>
+									<a href="#troca-chaves"
+										>Troca de Chaves (DH)</a
+									>
+								</li>
+								<li>
+									<a href="#hash-hmac-assinatura"
+										>Hash, HMAC e Assinatura</a
+									>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<a href="#seguranca-avancada">Segurança Avançada</a>
+							<ul>
+								<li>
+									<a href="#pfs">Perfect Forward Secrecy</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+			</aside>
+
+			<main class="main-content">
+				<section id="intro-fundamentos">
+					<h2>Fundamentos da Segurança em Redes</h2>
+					<p>
+						Em um ambiente de rede, onde dados trafegam entre
+						diferentes sistemas através de canais potencialmente
+						inseguros, a segurança torna-se um aspecto crítico.
+						Ataques como escutas, falsificações e modificações de
+						mensagens podem comprometer o funcionamento, a
+						privacidade e a confiabilidade de aplicações e usuários.
+					</p>
+					<p>
+						Esta seção apresenta os fundamentos necessários para
+						entender como proteger comunicações em redes.
+						Dividiremos o conteúdo em três blocos:
+					</p>
+					<ul>
+						<li>
+							<strong>Objetivos de Segurança</strong> — Definem o
+							que queremos garantir em uma comunicação segura:
+							integridade, autenticação e confidencialidade.
+						</li>
+						<li>
+							<strong>Fundamentos da Criptografia</strong> —
+							Apresentam os mecanismos que tornam esses objetivos
+							possíveis, como cifras, funções hash, trocas de
+							chaves e assinaturas digitais.
+						</li>
+						<li>
+							<strong>Conceitos de Segurança Avançada</strong> —
+							Abordam noções mais sofisticadas, como Perfect
+							Forward Secrecy e formas de mitigar ataques de
+							negação de serviço.
+						</li>
+					</ul>
+					<p>
+						Juntos, esses elementos formam a base sobre a qual são
+						construídos protocolos como o IPsec. Compreender esses
+						conceitos é essencial para interpretar, projetar ou
+						avaliar qualquer mecanismo de segurança em redes.
+					</p>
+				</section>
+
+				<hr />
+
+				<section id="objetivos-seguranca">
+					<h2>Objetivos da Segurança</h2>
+					<p>
+						Segurança em redes não é um conceito único, mas um
+						conjunto de propriedades que garantem a proteção da
+						comunicação contra ameaças. Antes de estudar os
+						mecanismos técnicos utilizados para assegurar essa
+						proteção, é importante entender os principais objetivos
+						que guiam seu desenvolvimento.
+					</p>
+					<p>
+						Nesta seção, apresentamos os três pilares fundamentais
+						da segurança: integridade, autenticação e
+						confidencialidade.
+					</p>
+
+					<h4>Integridade</h4>
+					<p>
+						Garantir a integridade significa assegurar que os dados
+						recebidos são exatamente os mesmos que foram enviados,
+						sem alterações durante a transmissão. Um sistema com
+						integridade detecta modificações acidentais ou
+						maliciosas no conteúdo, incluindo alterações, inserções
+						ou remoções de dados.
+					</p>
+
+					<h4>Autenticação</h4>
+					<p>
+						A autenticação visa confirmar a identidade de uma das
+						partes envolvidas na comunicação. Em redes, isso
+						normalmente significa garantir que uma mensagem
+						realmente veio de quem afirma tê-la enviado, impedindo
+						que terceiros se passem por entidades legítimas. Além
+						disso, a autenticação também visa garantir o
+						<strong>não-repúdio</strong>, ou seja, impedir que o
+						remetente negue posteriormente a autoria da mensagem.
+					</p>
+
+					<h4>Confidencialidade</h4>
+					<p>
+						Confidencialidade é a garantia de que apenas os
+						destinatários autorizados possam acessar o conteúdo de
+						uma mensagem. Mesmo que os dados trafeguem por canais
+						expostos, mecanismos de proteção impedem que informações
+						sensíveis sejam reveladas a interceptadores.
+					</p>
+				</section>
+
+				<hr />
+
+				<section id="fundamentos-cripto">
+					<h2>Fundamentos da Criptografia</h2>
+					<p>
+						Para tornar possíveis os objetivos de segurança, foi
+						necessário desenvolver um conjunto de ferramentas
+						matemáticas e computacionais conhecidas como
+						<strong>primitivas criptográficas</strong>. Essas
+						primitivas são os blocos fundamentais sobre os quais se
+						constroem os protocolos de segurança modernos.
+					</p>
+					<p>
+						Esta seção apresenta os conceitos centrais da
+						criptografia, servindo como base para entender como
+						sistemas seguros operam.
+					</p>
+
+					<h4 id="one-way-functions">
+						A Base: One-Way Functions e Trapdoors
+					</h4>
+					<p>
+						Um dos conceitos mais fundamentais da criptografia
+						moderna é o de <strong>função de mão única</strong> —
+						funções que são fáceis de calcular em uma direção, mas
+						difíceis de inverter. Ou seja, dado um valor de entrada
+						<code>x</code>, é simples calcular <code>f(x)</code>;
+						porém, dado <code>f(x)</code>, encontrar o
+						<code>x</code> original é considerado computacionalmente
+						inviável.
+					</p>
+					<blockquote>
+						<p>
+							Funções de mão única e
+							<strong>trapdoors</strong> (uma informação secreta
+							que permite inverter a função facilmente) são a base
+							para a criação de um canal de transmissão seguro em
+							um meio potencialmente inseguro como a internet.
+						</p>
+					</blockquote>
+
+					<h3 id="cifras">Garantindo Confidencialidade com Cifras</h3>
+					<p>
+						Uma <strong>cifra</strong> é o mecanismo central da
+						criptografia: ela transforma dados legíveis em uma
+						versão ilegível por meio de um processo matemático, com
+						o objetivo de protegê-los contra acessos não
+						autorizados. De forma geral, uma cifra é composta por
+						duas funções complementares: Criptografar e
+						Decriptografar, que dependem do uso de uma chave.
+					</p>
+					<pre><code>mensagem_cifrada = criptografar(mensagem_original, chave)
+mensagem_original = decriptografar(mensagem_cifrada, chave)</code></pre>
+					<p>
+						Cifras são essenciais para garantir a
+						<strong>confidencialidade</strong> das informações. Elas
+						podem ser classificadas em dois tipos, de acordo com o
+						gerenciamento de suas chaves:
+					</p>
+					<h4>Cifras Simétricas</h4>
+					<p>
+						Utilizam a <strong>mesma chave</strong> tanto para
+						criptografar quanto para descriptografar uma mensagem.
+						São muito eficientes e adequadas para grandes volumes de
+						dados, mas seu principal desafio é o compartilhamento
+						seguro dessa chave única entre as partes.
+					</p>
+					<h4>Cifras Assimétricas</h4>
+					<p>
+						Operam com um
+						<strong>par de chaves</strong> matematicamente
+						relacionadas: uma <strong>chave pública</strong> (para
+						criptografar) e uma <strong>chave privada</strong> (para
+						decriptografar). Permitem que qualquer pessoa envie uma
+						mensagem segura para o dono da chave privada, usando
+						apenas sua chave pública. Seu desafio é o alto custo
+						computacional, sendo mais lentas que as cifras
+						simétricas.
+					</p>
+
+					<h3 id="troca-chaves">
+						Troca de Chaves (Diffie-Hellman / ECDH)
+					</h3>
+					<p>
+						Como usar a eficiência das cifras simétricas se o
+						compartilhamento da chave é um problema? O protocolo de
+						<strong>Diffie-Hellman</strong> resolve isso: ele
+						permite que duas partes construam, juntas, uma chave
+						secreta compartilhada, mesmo se comunicando por um canal
+						completamente inseguro, sem nunca transmitir a chave
+						diretamente.
+					</p>
+					<p>
+						Uma variação moderna e mais eficiente é o
+						<strong>Elliptic Curve Diffie-Hellman (ECDH)</strong>,
+						que atinge o mesmo objetivo com chaves menores e maior
+						segurança, sendo amplamente utilizado no IPsec.
+					</p>
+					<blockquote>
+						<p>
+							A principal limitação do Diffie-Hellman "puro" é que
+							ele não garante autenticidade, o que o torna
+							vulnerável a ataques Man-in-the-Middle (MITM).
+						</p>
+					</blockquote>
+
+					<h3 id="hash-hmac-assinatura">
+						Funções Hash, HMAC e Assinatura Digital
+					</h3>
+					<h4>Funções Hash</h4>
+					<p>
+						Funções hash recebem uma entrada de qualquer tamanho e
+						produzem uma saída de tamanho fixo (um "resumo" ou
+						"impressão digital"). Mesmo uma pequena mudança na
+						entrada gera um hash completamente diferente. Elas
+						garantem a <strong>integridade</strong> dos dados, mas
+						não a autenticidade.
+					</p>
+					<h4>HMAC: Autenticando com Hashes</h4>
+					<p>
+						Para resolver a falta de autenticidade do hash, o
+						<strong
+							>HMAC (Hash-based Message Authentication
+							Code)</strong
+						>
+						combina a função hash com uma chave secreta. Somente
+						quem possui a chave pode gerar ou verificar o HMAC
+						corretamente, garantindo tanto a
+						<strong>integridade</strong> quanto a
+						<strong>autenticidade</strong> da mensagem.
+					</p>
+					<h4>Assinatura Digital e Certificados</h4>
+					<p>
+						Para cenários onde não há uma chave secreta
+						pré-compartilhada, a
+						<strong>assinatura digital</strong> é a solução. Usando
+						criptografia assimétrica, o remetente "assina" o hash da
+						mensagem com sua <strong>chave privada</strong>.
+						Qualquer pessoa pode verificar essa assinatura usando a
+						<strong>chave pública</strong> do remetente. Para
+						validar que uma chave pública realmente pertence a uma
+						entidade, usam-se
+						<strong>certificados digitais</strong>, emitidos por
+						Autoridades Certificadoras (CAs) confiáveis.
+					</p>
+				</section>
+
+				<hr />
+
+				<section id="seguranca-avancada">
+					<h2>Elevando o Nível de Segurança</h2>
+					<h3 id="pfs">Perfect Forward Secrecy (PFS)</h3>
+					<p>
+						O <strong>Perfect Forward Secrecy (PFS)</strong> é uma
+						propriedade que garante que o comprometimento de uma
+						chave de longo prazo (como a chave privada de um
+						servidor) <strong>não</strong> comprometa a segurança de
+						sessões de comunicação passadas. Isso é alcançado
+						gerando chaves de sessão únicas e temporárias para cada
+						conexão (usando algoritmos como DHE ou ECDHE), que são
+						descartadas após o uso.
+					</p>
+					<p>
+						Com PFS, mesmo que um atacante grave todo o tráfego por
+						anos e depois roube a chave privada do servidor, ele não
+						conseguirá decifrar as conversas antigas. Essa é uma
+						característica de segurança crucial para protocolos como
+						o IPsec.
+					</p>
+				</section>
+			</main>
+		</div>
+	</body>
+</html>
