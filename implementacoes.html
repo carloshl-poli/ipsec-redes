@@ -11,7 +11,8 @@
 			<h1>IPsec: Segurança na Camada de Rede</h1>
 			<nav class="top-nav">
 				<ul>
-					<li><a href="index.html">Introdução</a></li>
+					<li><a href="index.html">Capa Técnica</a></li>
+					<li><a href="intro.html">Introdução</a></li>
 					<li>
 						<a href="fundamentos.html"
 							>Fundamentos da Segurança em Rede</a
@@ -139,8 +140,6 @@
 					<h3 id="host-os-integrated">
 						Integrada ao Sistema Operacional (OS-integrated)
 					</h3>
-                    <img src="img/" alt="host-os-integrated">
-
 					<p>
 						Esta é a forma mais comum e eficiente de implementação
 						hoje. O IPsec é um protocolo da camada de rede e, nesta
@@ -148,10 +147,11 @@
 						pilha de protocolos do sistema operacional (ex: Windows,
 						Linux, macOS, *BSD).
 					</p>
-					<div class="placeholder-imagem">
-						[INSERIR IMAGEM: Figura 4.2 - Camadas da pilha IPsec
-						integrada ao S.O.]
-					</div>
+					<img
+						src="img/host-OS-Integrated.png"
+						alt="host-os-integrated"
+						style="width: 30%; height: auto"
+					/>
 					<h4>Vantagens da Integração com o S.O.:</h4>
 					<ul>
 						<li>
@@ -185,10 +185,12 @@
 						camada de rede (IP) e a camada de enlace (drivers de
 						dispositivo) da pilha de protocolos.
 					</p>
-					<div class="placeholder-imagem">
-						[INSERIR IMAGEM: Figura 4.3 - Camadas da pilha IPsec
-						BITS]
-					</div>
+					<img
+						src="img/BITS-implementation.png"
+						alt="Bump-in-the-Stack"
+						,
+						style="width: 30%; height: auto"
+					/>
 					<p>
 						O principal atrativo histórico do BITS era permitir que
 						fornecedores de soluções de segurança (como clientes VPN
@@ -263,7 +265,12 @@
 						uma parte integral do software (firmware) do roteador ou
 						firewall.
 					</p>
-                    <img src="img/native-implementation.png" alt="gateway-nativa", style="width: 50%; height: auto;">
+					<img
+						src="img/native-implementation.png"
+						alt="gateway-nativa"
+						,
+						style="width: 50%; height: auto"
+					/>
 					<p>
 						Esta é a abordagem mais comum para gateways modernos,
 						oferecendo gerenciamento centralizado e, frequentemente,
@@ -282,7 +289,12 @@
 						IPsec nativo). Este dispositivo intercepta e processa os
 						pacotes.
 					</p>
-                    <img src="img/bitw-implementation.png" alt="gateway-nativa", style="width: 50%; height: auto;">
+					<img
+						src="img/bitw-implementation.png"
+						alt="gateway-nativa"
+						,
+						style="width: 50%; height: auto"
+					/>
 				</section>
 			</main>
 		</div>

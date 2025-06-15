@@ -1,75 +1,213 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPsec: Título da Página</title>
-    <link rel="stylesheet" href="estilo.css">
-</head>
-<body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>IPsec: Título da Página</title>
+		<link rel="stylesheet" href="estilo.css" />
+	</head>
+	<body>
+		<header class="main-header">
+			<h1>IPsec: Segurança na Camada de Rede</h1>
+			<nav class="top-nav">
+				<ul>
+					<li><a href="index.html">Capa Técnica</a></li>
+					<li><a href="intro.html">Introdução</a></li>
+					<li>
+						<a href="fundamentos.html"
+							>Fundamentos da Segurança em Rede</a
+						>
+					</li>
+					<li><a href="arquitetura.html">Arquitetura</a></li>
+					<li><a href="modos.html">Modos de Operação</a></li>
+					<li><a href="protocolos.html">Protocolos AH & ESP</a></li>
+					<li><a href="ikev2.html">IKEv2</a></li>
+					<li><a href="implementacoes.html">Implementações</a></li>
+					<li><a href="conclusao.html">Conclusão</a></li>
+				</ul>
+			</nav>
+		</header>
 
-    <header class="main-header">
-        <h1>IPsec: Segurança na Camada de Rede</h1>
-        <nav class="top-nav">
-            <ul>
-                <li><a href="index.html">Introdução</a></li>
-                <li><a href="fundamentos.html">Fundamentos da Segurança em Rede</a></li>
-                <li><a href="arquitetura.html">Arquitetura</a></li>
-                <li><a href="modos.html">Modos de Operação</a></li>
-                <li><a href="protocolos.html">Protocolos AH & ESP</a></li>
-                <li><a href="ikev2.html">IKEv2</a></li>
-                <li><a href="implementacoes.html">Implementações</a></li>
-                <li><a href="conclusao.html">Conclusão</a></li>
-            </ul>
-        </nav>
-    </header>
+		<div class="page-container">
+			<aside class="side-toc">
+				<h2>Nesta Página</h2>
+				<nav>
+					<ul>
+						<li><a href="#conclusao">Conclusão</a></li>
+						<li><a href="#perguntas">Perguntas e Respostas</a></li>
+						<li><a href="#referencias">Referências</a></li>
+					</ul>
+				</nav>
+			</aside>
 
-    <div class="page-container">
-        
-        <aside class="side-toc">
-            <h2>Nesta Página</h2>
-            <nav>
-                <ul>
-                    <li><a href="#secao1">Introdução da Página</a></li>
-                    <li><a href="#secao2">Primeiro Tópico</a></li>
-                    <li><a href="#secao3">Segundo Tópico</a></li>
-                    <li><a href="#secao4">Conclusão da Página</a></li>
-                </ul>
-            </nav>
-        </aside>
+			<main class="main-content">
+				<section id="conclusao">
+					<h1>Conclusão</h1>
+					<p>
+						Neste trabalho, analisamos o IPsec, uma suíte de
+						protocolos projetada pela IETF para suprir a ausência de
+						segurança na arquitetura original da internet. Abordamos
+						seus fundamentos criptográficos, a estrutura baseada em
+						Políticas de Segurança (SPD) e Associações de Segurança
+						(SAD), os protocolos de encapsulamento (AH e ESP), seus
+						modos de operação e o mecanismo de negociação automática
+						de chaves, o IKEv2.
+					</p>
 
-        <main class="main-content">
-            
-            <section id="secao1">
-                <h2>Título da Seção 1</h2>
-                <p>Este é um parágrafo de exemplo. O texto do seu trabalho virá aqui...</p>
-                <p>Outro parágrafo...</p>
-            </section>
-            
-            <section id="secao2">
-                <h2>Título da Seção 2</h2>
-                <p>Mais conteúdo aqui...</p>
-                <pre><code>
-/* Blocos de código ou diagramas ASCII 
-   podem ser colocados dentro de tags <pre> e <code> */
-+-----------------+
-|   Diagrama      |
-+-----------------+
-                </code></pre>
-            </section>
+					<p>
+						A eficácia do IPsec decorre da integração entre seus
+						elementos. A SPD define o tráfego a ser protegido,
+						enquanto o ESP, com suporte a cifras AEAD, oferece
+						confidencialidade e integridade de forma eficiente. O
+						IKEv2 automatiza a negociação de chaves e o
+						gerenciamento das SAs, viabilizando uma arquitetura
+						segura, escalável e operacionalmente prática.
+					</p>
 
-            <section id="secao3">
-                <h2>Título da Seção 3</h2>
-                <p>...</p>
-            </section>
+					<p>
+						O impacto do IPsec é profundo. Ele é a base técnica da
+						maioria das VPNs atuais — tanto as Site-to-Site, que
+						interligam redes corporativas, quanto as de Acesso
+						Remoto, usadas no trabalho híbrido. Em ambientes que
+						adotam o modelo "Zero Trust", sua atuação na camada de
+						rede, independente da aplicação, o mantém como uma
+						ferramenta central de defesa em profundidade.
+					</p>
 
-            <section id="secao4">
-                <h2>Título da Seção 4</h2>
-                <p>...</p>
-            </section>
+					<p>
+						Embora protocolos como o WireGuard ganhem espaço em
+						cenários específicos, o IPsec permanece como padrão
+						industrial para segurança de rede granular, robusta e
+						interoperável. Seu legado é o de uma das padronizações
+						mais relevantes da segurança na internet — uma camada de
+						confiança essencial, embora muitas vezes invisível.
+					</p>
+				</section>
+				<section id="perguntas">
+					<h2>Perguntas e Respostas</h2>
 
-        </main>
-    </div>
+					<h3>
+						1. Por que o ESP é preferido ao AH em redes modernas?
+					</h3>
+					<p>
+						<strong>Resposta:</strong> Porque o AH é incompatível
+						com NAT. Ele inclui o cabeçalho IP no cálculo de
+						integridade, e como o NAT altera esse cabeçalho, a
+						verificação falha. O ESP ignora o cabeçalho IP externo,
+						funcionando corretamente mesmo com NAT.
+					</p>
 
-</body>
+					<h3>
+						2. Qual a diferença entre Modo Transporte e Modo Túnel,
+						e quando usar cada um?
+					</h3>
+					<p>
+						<strong>Resposta:</strong> O Modo Transporte protege
+						apenas o payload, mantendo o cabeçalho IP original —
+						ideal para comunicação fim-a-fim entre hosts. O Modo
+						Túnel encapsula todo o pacote IP original — usado para
+						VPNs entre gateways ou acesso remoto.
+					</p>
+
+					<h3>3. Qual o papel do IKEv2 no IPsec?</h3>
+					<p>
+						<strong>Resposta:</strong> Automatizar a negociação de
+						chaves e Associações de Segurança (SAs). Ele cuida da
+						autenticação, negociação de algoritmos, geração de
+						chaves e rekeying. Sem ele, o IPsec seria inviável em
+						escala.
+					</p>
+
+					<h3>
+						4. Qual a diferença entre SPD e SAD na arquitetura do
+						IPsec?
+					</h3>
+					<p>
+						<strong>Resposta:</strong> A SPD define se e o que deve
+						ser protegido, agindo como conjunto de regras. A SAD
+						define como proteger, armazenando os parâmetros técnicos
+						(SPI, chaves, algoritmos) usados quando a SPD exige
+						proteção.
+					</p>
+
+					<h3>
+						5. Quais pilares da segurança são atendidos pelo AH e
+						qual é deixado de fora?
+					</h3>
+					<p>
+						<strong>Resposta:</strong> O AH garante Integridade e
+						Autenticidade — assegura que o pacote não foi alterado e
+						veio da origem esperada. O pilar excluído é a
+						Confidencialidade, pois o AH não realiza criptografia
+						dos dados.
+					</p>
+				</section>
+				<hr />
+				<section id="referencias">
+					<h2>Referências Bibliográficas</h2>
+					<ol class="lista-referencias">
+						<li>
+							Harkins, D., & Doraswamy, N. (2003).
+							<em
+								>IPSec: The New Security Standard for the
+								Internet, Intranets, and Virtual Private
+								Networks</em
+							>
+							(2nd ed.).
+						</li>
+						<li>
+							Kent, S., & Seo, K. (Dezembro, 2005).
+							<em
+								>Security Architecture for the Internet
+								Protocol</em
+							>
+							(RFC 4301). Internet Engineering Task Force (IETF).
+							Retirado de
+							<a
+								href="https://datatracker.ietf.org/doc/html/rfc4301"
+								target="_blank"
+								>https://datatracker.ietf.org/doc/html/rfc4301</a
+							>
+						</li>
+						<li>
+							Kent, S. (Dezembro, 2005).
+							<em>IP Authentication Header (AH)</em> (RFC 4302).
+							Internet Engineering Task Force (IETF). Retirado de
+							<a
+								href="https://datatracker.ietf.org/doc/html/rfc4302"
+								target="_blank"
+								>https://datatracker.ietf.org/doc/html/rfc4302</a
+							>
+						</li>
+						<li>
+							Kent, S. (Dezembro, 2005).
+							<em>IP Encapsulating Security Payload (ESP)</em>
+							(RFC 4303). Internet Engineering Task Force (IETF).
+							Retirado de
+							<a
+								href="https://datatracker.ietf.org/doc/html/rfc4303"
+								target="_blank"
+								>https://datatracker.ietf.org/doc/html/rfc4303</a
+							>
+						</li>
+						<li>
+							Kaufman, C., Hoffman, P., Nir, Y., Eronen, P., &
+							Kivinen, T. (Dezembro, 2014).
+							<em
+								>Internet Key Exchange Protocol Version 2
+								(IKEv2)</em
+							>
+							(RFC 7296). Internet Engineering Task Force (IETF).
+							Retirado de
+							<a
+								href="https://datatracker.ietf.org/doc/html/rfc7296"
+								target="_blank"
+								>https://datatracker.ietf.org/doc/html/rfc7296</a
+							>
+						</li>
+					</ol>
+				</section>
+			</main>
+		</div>
+	</body>
 </html>

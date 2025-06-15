@@ -11,7 +11,8 @@
 			<h1>IPsec: Segurança na Camada de Rede</h1>
 			<nav class="top-nav">
 				<ul>
-					<li><a href="index.html">Introdução</a></li>
+					<li><a href="index.html">Capa Técnica</a></li>
+					<li><a href="intro.html">Introdução</a></li>
 					<li>
 						<a href="fundamentos.html"
 							>Fundamentos da Segurança em Rede</a
@@ -642,96 +643,108 @@
 						(<code>AUTH</code>), e a confirmação da Child SA
 						(<code>SAr2</code>, <code>TSi</code>, <code>TSr</code>).
 					</p>
-
-					<h3 id="ike-auth-metodos">
-						Métodos de Autenticação no IKEv2
-					</h3>
+					<h3 id="ike-auth-metodos">Métodos de Autenticação no IKEv2</h3>
 					<p>
 						O IKEv2 suporta diversos métodos para que os pares
-						provem suas identidades. Os mais comuns são:
+						provem suas identidades. A tabela abaixo compara os mais
+						comuns:
 					</p>
-					<ul>
-						<li>
-							<strong
-								>🔑 Chaves Pré-Compartilhadas (PSK - Pre-Shared
-								Keys):</strong
-							>
-							<ul>
-								<li>
-									<strong>Descrição:</strong> Um segredo
-									(senha) é configurado manualmente em ambos
-									os pares.
-								</li>
-								<li>
-									<strong>Vantagens:</strong> Simples de
-									configurar para poucas conexões.
-								</li>
-								<li>
-									<strong>Desvantagens:</strong> Não escala
-									bem, difícil de gerenciar e revogar.
-								</li>
-								<li>
-									<strong>Uso Ideal:</strong> Redes pequenas,
-									testes ou conexões site-to-site simples.
-								</li>
-							</ul>
-						</li>
-						<li>
-							<strong
-								>📜 Assinaturas Digitais (com Certificados
-								X.509):</strong
-							>
-							<ul>
-								<li>
-									<strong>Descrição:</strong> Cada par usa um
-									par de chaves (pública/privada) e um
-									certificado digital emitido por uma
-									Autoridade Certificadora (CA) confiável.
-								</li>
-								<li>
-									<strong>Vantagens:</strong> Altamente
-									escalável, gerenciamento centralizado, forte
+
+					<table>
+						<thead>
+							<tr>
+								<th>Método de Autenticação</th>
+								<th>Descrição</th>
+								<th>Vantagens</th>
+								<th>Desvantagens</th>
+								<th>Uso Ideal</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<strong
+										>Chaves Pré-Compartilhadas (PSK)</strong
+									>
+								</td>
+								<td>
+									Um segredo (essencialmente uma senha forte)
+									é configurado manualmente em ambos os pares
+									antes da comunicação.
+								</td>
+								<td>
+									Simples de configurar para um número pequeno
+									de conexões.
+								</td>
+								<td>
+									Não escala bem, é difícil de gerenciar e
+									revogar chaves em ambientes grandes.
+								</td>
+								<td>
+									Redes pequenas, testes ou conexões
+									site-to-site com poucos túneis.
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<strong
+										>Assinaturas Digitais (Certificados
+										X.509)</strong
+									>
+								</td>
+								<td>
+									Cada par usa um par de chaves
+									(pública/privada) e um certificado digital
+									emitido por uma Autoridade Certificadora
+									(CA) confiável.
+								</td>
+								<td>
+									Altamente escalável, gerenciamento
+									centralizado da confiança (via CAs) e forte
 									não-repúdio.
-								</li>
-								<li>
-									<strong>Desvantagens:</strong> Requer uma
+								</td>
+								<td>
+									Requer a implementação e manutenção de uma
 									Infraestrutura de Chave Pública (PKI).
-								</li>
-								<li>
-									<strong>Uso Ideal:</strong> A maioria dos
-									cenários empresariais, VPNs site-to-site em
-									larga escala.
-								</li>
-							</ul>
-						</li>
-						<li>
-							<strong
-								>🔗 EAP (Extensible Authentication
-								Protocol):</strong
-							>
-							<ul>
-								<li>
-									<strong>Descrição:</strong> Delega a
-									autenticação a um servidor backend (como
-									RADIUS), permitindo o uso de credenciais de
-									usuário (senha, tokens, etc.).
-								</li>
-								<li>
-									<strong>Vantagens:</strong> Flexível, ideal
-									para autenticar usuários individuais.
-								</li>
-								<li>
-									<strong>Desvantagens:</strong> Adiciona
-									complexidade e dependência de um servidor
-									externo.
-								</li>
-								<li>
-									<strong>Uso Ideal:</strong> VPNs de acesso
-									remoto.
-								</li>
-							</ul>
-						</li>
-					</ul>
+								</td>
+								<td>
+									A maioria dos cenários empresariais, VPNs
+									site-to-site em larga escala e conexões
+									entre diferentes organizações.
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<strong
+										>EAP (Extensible Authentication
+										Protocol)</strong
+									>
+								</td>
+								<td>
+									Delega a autenticação a um servidor backend
+									(como RADIUS), permitindo o uso de
+									credenciais de usuário (senha, tokens,
+									etc.).
+								</td>
+								<td>
+									Extremamente flexível e ideal para
+									autenticar usuários individuais,
+									integrando-se com sistemas existentes.
+								</td>
+								<td>
+									Adiciona mais trocas de mensagens e introduz
+									uma dependência de um servidor de
+									autenticação externo.
+								</td>
+								<td>
+									VPNs de acesso remoto, onde funcionários ou
+									clientes precisam se conectar à rede
+									corporativa.
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
 					<blockquote>
 						<p>
 							(Nota sobre "Assinaturas digitais com chaves
@@ -743,7 +756,6 @@
 							Certificados X.509 e CAs.)
 						</p>
 					</blockquote>
-
 					<h3 id="ike-auth-certs">
 						Por que Certificados X.509 são Amplamente Utilizados?
 					</h3>

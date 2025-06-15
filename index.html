@@ -11,7 +11,8 @@
 			<h1>IPsec: Segurança na Camada de Rede</h1>
 			<nav class="top-nav">
 				<ul>
-					<li><a href="index.html">Introdução</a></li>
+					<li><a href="index.html">Capa Técnica</a></li>
+					<li><a href="intro.html">Introdução</a></li>
 					<li>
 						<a href="fundamentos.html"
 							>Fundamentos da Segurança em Rede</a
@@ -28,207 +29,57 @@
 		</header>
 
 		<div class="page-container">
-			<aside class="side-toc">
-				<h2>Nesta Página</h2>
-				<nav>
-					<ul>
-						<li><a href="#intro-ipsec">Introdução ao IPsec</a></li>
-						<li>
-							<a href="#solucao-framework"
-								>A Solução: O Framework IPsec</a
-							>
-						</li>
-						<li>
-							<a href="#componentes-protecao"
-								>Os Componentes da Proteção</a
-							>
-							<ul>
-								<li>
-									<a href="#protocolos-ah-esp"
-										>Protocolos: AH e ESP</a
-									>
-								</li>
-								<li>
-									<a href="#desafio-ike"
-										>O Desafio das Chaves: IKE</a
-									>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</nav>
-			</aside>
-
 			<main class="main-content">
-				<section id="intro-ipsec">
-					<h1>
-						Introdução ao IPsec: Segurança para uma Rede Insegura
-					</h1>
-					<p>
-						O Protocolo de Internet (IP), por concepção, não oferece
-						mecanismos de segurança inerentes. Essa característica
-						fundamental expõe os datagramas IP a uma série de
-						vulnerabilidades críticas que podem ser exploradas com
-						relativa facilidade:
-					</p>
-					<ul>
-						<li>
-							<strong
-								>Falsificação de Endereço (Spoofing):</strong
-							>
-							Um ator malicioso pode forjar o endereço de origem
-							de um pacote, mascarando sua real identidade ou se
-							passando por um host confiável.
-						</li>
-						<li>
-							<strong>Modificação de Dados (Tampering):</strong> O
-							conteúdo de um pacote pode ser alterado durante o
-							trânsito, corrompendo a informação sem que o
-							destinatário tenha como detectar a violação.
-						</li>
-						<li>
-							<strong
-								>Interceptação de Dados (Eavesdropping):</strong
-							>
-							Por não possuir confidencialidade, os dados em um
-							pacote IP podem ser inspecionados por qualquer
-							intermediário na rota de comunicação.
-						</li>
-						<li>
-							<strong
-								>Ataque de Repetição (Replay Attack):</strong
-							>
-							Pacotes legítimos podem ser capturados e reenviados
-							posteriormente para produzir um efeito indesejado.
-						</li>
-					</ul>
-					<p>
-						Como consequência direta, não há qualquer garantia de
-						que um datagrama IP recebido seja
-						<strong>autêntico</strong> (vindo do remetente alegado),
-						<strong>íntegro</strong> (com seu conteúdo original
-						intacto) ou <strong>confidencial</strong> (protegido
-						contra espionagem).
-					</p>
-				</section>
+				<div class="rfc-header">
+					<div class="rfc-top">
+						<div class="rfc-left">
+							Grupo de Trabalho de Redes<br />
+							Carlos Henrique de Almeida Leal<br />
+							Gabriel Lopes<br />
+							Yan Lukas W. T. Pinto<br />
+							Universidade Federal do Rio de Janeiro
+						</div>
+						<div class="rfc-right">
+							Trabalho de Redes de Computadores<br />
+							Professor: Luís Henrique Maciel Kosmalski Costa<br />
+							Categoria: Trabalho Acadêmico<br />
+							Junho de 2025
+						</div>
+					</div>
 
-				<hr />
+					<h2 class="rfc-title">
+						Um Estudo sobre a Suíte de Protocolos IPsec
+					</h2>
 
-				<section id="solucao-framework">
-					<h2>A Solução: O Framework IPsec</h2>
-					<p>
-						Para resolver essas vulnerabilities críticas, a IETF
-						(Internet Engineering Task Force) desenvolveu o
-						<strong>IPsec (Internet Protocol Security)</strong>.
-						Trata-se de um framework padrão, robusto e extensível,
-						projetado para adicionar serviços de segurança
-						diretamente na camada de rede, protegendo o tráfego IP
-						e, por consequência, todos os protocolos das camadas
-						superiores (como TCP e UDP).
-					</p>
-					<p>
-						Para garantir a interoperabilidade entre diferentes
-						implementações, o IPsec define um conjunto de algoritmos
-						criptográficos padrão que são de implementação
-						obrigatória, ao mesmo tempo que permite a adição de
-						novos algoritmos de forma retrocompatível.
-					</p>
-				</section>
+					<div class="rfc-section">
+						<p class="rfc-section-title">Status deste Trabalho</p>
+						<p class="rfc-paragraph">
+							Este documento representa o resultado de uma
+							pesquisa acadêmica para a disciplina de Redes de
+							Computadores. Ele descreve a arquitetura, os
+							protocolos e os mecanismos do IPsec, com foco nos
+							padrões modernos e em seu funcionamento prático.
+						</p>
+					</div>
 
-				<hr />
+					<div class="rfc-section">
+						<p class="rfc-section-title">Resumo (Abstract)</p>
+						<p class="rfc-paragraph">
+							Este trabalho apresenta uma análise detalhada da
+							suíte de protocolos IPsec, projetada para prover
+							serviços de segurança na camada de rede. São
+							explorados seus componentes arquiteturais, como a
+							Política de Segurança (SPD) e a Associação de
+							Segurança (SA), seus protocolos de proteção, AH e
+							ESP, e o protocolo de gerenciamento de chaves,
+							IKEv2. O objetivo é fornecer um guia completo e
+							atualizado sobre o funcionamento e a relevância do
+							IPsec na segurança de redes modernas.
+						</p>
+					</div>
 
-				<section id="componentes-protecao">
-					<h2>Os Componentes da Proteção</h2>
-					<p>
-						O IPsec protege o tráfego de rede definindo o que
-						proteger, como proteger e para quem enviar os dados
-						protegidos. Ele pode ser aplicado entre dois hosts,
-						entre gateways de segurança (como roteadores e
-						firewalls) ou entre um host e um gateway. Os principais
-						componentes que tornam isso possível são:
-					</p>
-
-					<h3 id="protocolos-ah-esp">
-						Os Protocolos de Proteção: AH e ESP
-					</h3>
-					<p>
-						A proteção dos dados é realizada por um dos dois
-						protocolos centrais do IPsec:
-					</p>
-					<ul>
-						<li>
-							<strong>AH (Authentication Header):</strong> Oferece
-							autenticação da origem dos dados, integridade
-							(garantindo que não houve modificação) e proteção
-							contra ataques de repetição. Não fornece
-							confidencialidade.
-						</li>
-						<li>
-							<strong
-								>ESP (Encapsulating Security Payload):</strong
-							>
-							Oferece todos os serviços do AH (autenticidade,
-							integridade e anti-replay) e, adicionalmente, provê
-							confidencialidade através da criptografia do
-							conteúdo do pacote.
-						</li>
-					</ul>
-
-					<h3 id="desafio-ike">
-						O Desafio das Chaves e a Solução: IKE
-					</h3>
-					<p>
-						Todos os serviços de segurança do IPsec dependem do uso
-						de chaves secretas compartilhadas para realizar a
-						autenticação e/ou a criptografia. Embora o padrão exija
-						um método para a configuração manual de chaves, essa
-						abordagem não é escalável para redes complexas.
-					</p>
-					<p>
-						Para resolver esse problema, o IPsec define um protocolo
-						de gerenciamento de chaves robusto, o
-						<strong>IKE (Internet Key Exchange)</strong>. O IKE é
-						responsável por:
-					</p>
-					<ul>
-						<li>
-							Autenticar dinamicamente os participantes da
-							comunicação.
-						</li>
-						<li>
-							Negociar os algoritmos e parâmetros de segurança a
-							serem utilizados.
-						</li>
-						<li>
-							Gerar e gerenciar as chaves secretas compartilhadas
-							de forma segura e automática.
-						</li>
-					</ul>
-				</section>
-
-				<hr />
-
-				<section id="conclusao-intro">
-					<p>
-						Assim, o IPsec se apresenta como um ecossistema
-						completo, onde os protocolos de proteção de dados
-						(<strong>AH</strong> e <strong>ESP</strong>) garantem a
-						segurança pacote a pacote, enquanto o protocolo de
-						gerenciamento (<strong>IKE</strong>) provê a automação e
-						a inteligência necessárias para estabelecer e manter
-						esses canais seguros. Para compreender a fundo como essa
-						robusta arquitetura funciona, as próximas seções deste
-						trabalho irão dissecar cada uma de suas camadas:
-						começaremos com os
-						<strong>fundamentos da criptografia</strong> que
-						sustentam o sistema, passaremos pela
-						<strong>arquitetura</strong> e seus componentes (SPD e
-						SAD), analisaremos os
-						<strong>protocolos e modos de operação</strong> em
-						detalhe e, por fim, mergulharemos no funcionamento do
-						<strong>IKEv2</strong>.
-					</p>
-				</section>
+					<div class="rfc-footer-line"></div>
+				</div>
 			</main>
 		</div>
 	</body>

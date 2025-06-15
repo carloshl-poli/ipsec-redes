@@ -11,7 +11,8 @@
 			<h1>IPsec: Segurança na Camada de Rede</h1>
 			<nav class="top-nav">
 				<ul>
-					<li><a href="index.html">Introdução</a></li>
+					<li><a href="index.html">Capa Técnica</a></li>
+					<li><a href="intro.html">Introdução</a></li>
 					<li>
 						<a href="fundamentos.html"
 							>Fundamentos da Segurança em Rede</a
@@ -212,24 +213,12 @@
 						A estrutura do cabeçalho AH é relativamente simples,
 						pois não lida com criptografia.
 					</p>
-					<div class="placeholder-imagem">
-						[INSERIR IMAGEM: Figura 6.1 - O Cabeçalho AH]
-					</div>
-					<pre><code>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| Next Header   |  Payload Len  |          RESERVED             |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                 Security Parameters Index (SPI)               |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                    Sequence Number Field                      |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                                                               |
-+                Integrity Check Value-ICV (variable)           |
-|                                                               |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-    </code></pre>
+					<img
+						src="img/AH-HDR.drawio.png"
+						alt="AH-HDR"
+						,
+						style="width: 60%; height: auto"
+					/>
 					<p>Vamos detalhar cada um de seus campos:</p>
 					<ul>
 						<li>
@@ -300,6 +289,14 @@
 						formas distintas, dependendo do escopo da proteção
 						desejada: Modo Transporte ou Modo Túnel.
 					</p>
+					<p>Inicialmente temos o datagrama original:</p>
+					<img
+						src="img/AH-packets-before.png"
+						alt="AH-packets-before"
+						,
+						style="width: 40%; height: auto"
+					/>
+					<p>A partir dele, vamos aplicar o AH com ambos os modos.</p>
 					<h4>Modo Transporte</h4>
 					<p>
 						Em Modo Transporte, o AH é utilizado para prover
@@ -311,10 +308,12 @@
 						mantido, e os endereços de origem e destino não são
 						alterados.
 					</p>
-					<div class="placeholder-imagem">
-						[INSERIR IMAGEM: Figura 6.2 - Pacote antes e depois da
-						aplicação do AH em Modo Transporte]
-					</div>
+					<img
+						src="img/AH-packets-after-transport.png"
+						alt="AH-packets-after-transport"
+						,
+						style="width: 60%; height: auto"
+					/>
 
 					<h4>Modo Túnel</h4>
 					<p>
@@ -326,10 +325,12 @@
 						pacote. O pacote original, com seus endereços de origem
 						e destino, se torna o payload do novo pacote.
 					</p>
-					<div class="placeholder-imagem">
-						[INSERIR IMAGEM: Figura 6.3 - Pacote antes e depois da
-						aplicação do AH em Modo Túnel]
-					</div>
+					<img
+						src="img/AH-packets-after-tunnel.png"
+						alt="AH-packets-after-tunnel"
+						,
+						style="width: 60%; height: auto"
+					/>
 
 					<h4>A Utilidade Limitada do Túnel com AH</h4>
 					<p>
@@ -379,10 +380,12 @@
 					<p>O processo pode ser resumido da seguinte forma:</p>
 
 					<h4>No Remetente (Processamento de Saída)</h4>
-					<div class="placeholder-imagem">
-						[INSERIR IMAGEM: Fluxograma (Outbound) dos passos nos
-						cabeçalhos AH e IP]
-					</div>
+					<img
+						src="img/AH-Outbound.png"
+						alt="AH-Outbound"
+						,
+						style="width: 100%; height: auto"
+					/>
 					<ol>
 						<li>
 							O sistema monta o cabeçalho AH, preenchendo todos os
@@ -407,6 +410,12 @@
 					</ol>
 
 					<h4>No Receptor (Processamento de Entrada)</h4>
+					<img
+						src="img/AH-Inbound.png"
+						alt="AH-Inbound"
+						,
+						style="width: 50%; height: auto"
+					/>
 					<ol>
 						<li>
 							Após encontrar la SA correta, o sistema verifica o
@@ -619,9 +628,12 @@
 						criptografado, um trailer (rodapé) e um campo final de
 						autenticação.
 					</p>
-					<div class="placeholder-imagem">
-						[INSERIR IMAGEM: Figura 5.1 - Estrutura do Pacote ESP]
-					</div>
+					<img
+						src="img/ESP-HDR.png"
+						alt="ESP-HDR"
+						,
+						style="width: 60%; height: auto"
+					/>
 					<p>Vamos detalhar cada componente:</p>
 
 					<h5>Cabeçalho ESP (Não Criptografado, Autenticado)</h5>
@@ -708,6 +720,16 @@
 						posicionamento do cabeçalho ESP no pacote dependem do
 						modo de operação escolhido:
 					</p>
+					<p>Novamente, voltamos ao mesmo datagrama original:</p>
+					<img
+						src="img/AH-packets-before.png"
+						alt="AH-packets-before"
+						,
+						style="width: 40%; height: auto"
+					/>
+					<p>
+						A partir dele, vamos aplicar o ESP com ambos os modos.
+					</p>
 
 					<h4>Modo Transporte</h4>
 					<p>
@@ -721,10 +743,12 @@
 						exemplo, se o ESP estiver protegendo um segmento TCP, o
 						valor será 6.
 					</p>
-					<div class="placeholder-imagem">
-						[INSERIR IMAGEM: Figura 5.2 - Pacote ESP em Modo
-						Transporte]
-					</div>
+					<img
+						src="img/ESP-packets-after-transport.png"
+						alt="ESP-packets-after-transport"
+						,
+						style="width: 70%; height: auto"
+					/>
 
 					<h4>Modo Túnel</h4>
 					<p>
@@ -738,9 +762,12 @@
 						protegido é um pacote IP. O valor será 4 para um pacote
 						IPv4 encapsulado ou 41 para um pacote IPv6 encapsulado.
 					</p>
-					<div class="placeholder-imagem">
-						[INSERIR IMAGEM: Figura 5.3 - Pacote ESP em Modo Túnel]
-					</div>
+					<img
+						src="img/ESP-packets-after-tunnel.png"
+						alt="ESP-packets-after-tunnel"
+						,
+						style="width: 70%; height: auto"
+					/>
 
 					<h3 id="esp-processamento">
 						O Processo de Proteção do ESP
@@ -765,6 +792,12 @@
 					</p>
 
 					<h4>No Remetente (Processamento de Saída)</h4>
+					<img
+						src="img/ESP-Outbound.png"
+						alt="ESP-Outbound"
+						,
+						style="width: 100%; height: auto"
+					/>
 					<ol>
 						<li>
 							<strong>Construção do Pacote ESP:</strong> O sistema
@@ -796,6 +829,12 @@
 					</blockquote>
 
 					<h4>No Receptor (Processamento de Entrada)</h4>
+					<img
+						src="img/ESP-Inbound.png"
+						alt="ESP-Inbound"
+						,
+						style="width: 50%; height: auto"
+					/>
 					<ol>
 						<li>
 							<strong>Reagrupamento (se necessário):</strong> Se o

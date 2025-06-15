@@ -164,3 +164,46 @@ thead th {
 tbody tr:nth-child(even) {
     background-color: var(--header-bg); /* Deixa as linhas pares um pouco mais escuras para facilitar a leitura */
 }
+
+
+.rfc-top {
+    display: flex;
+    justify-content: space-between; /* Alinha os blocos da esquerda e direita nas extremidades */
+    line-height: 1.4;
+}
+
+.rfc-left {
+    text-align: left;
+}
+
+.rfc-right {
+    text-align: right;
+}
+
+.rfc-title {
+    text-align: center;
+    margin: 2rem 0;
+    font-size: 1.2rem;
+    color: var(--heading-color);
+}
+
+.rfc-section {
+    margin: 1.5rem 0;
+}
+
+.rfc-section-title {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.rfc-paragraph {
+    margin-left: 3rem; /* Cria a indentação característica dos parágrafos do RFC */
+}
+
+.rfc-footer-line {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
