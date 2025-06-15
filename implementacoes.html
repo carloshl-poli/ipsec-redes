@@ -1,75 +1,290 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPsec: Título da Página</title>
-    <link rel="stylesheet" href="estilo.css">
-</head>
-<body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>IPsec: Título da Página</title>
+		<link rel="stylesheet" href="estilo.css" />
+	</head>
+	<body>
+		<header class="main-header">
+			<h1>IPsec: Segurança na Camada de Rede</h1>
+			<nav class="top-nav">
+				<ul>
+					<li><a href="index.html">Introdução</a></li>
+					<li>
+						<a href="fundamentos.html"
+							>Fundamentos da Segurança em Rede</a
+						>
+					</li>
+					<li><a href="arquitetura.html">Arquitetura</a></li>
+					<li><a href="modos.html">Modos de Operação</a></li>
+					<li><a href="protocolos.html">Protocolos AH & ESP</a></li>
+					<li><a href="ikev2.html">IKEv2</a></li>
+					<li><a href="implementacoes.html">Implementações</a></li>
+					<li><a href="conclusao.html">Conclusão</a></li>
+				</ul>
+			</nav>
+		</header>
 
-    <header class="main-header">
-        <h1>IPsec: Segurança na Camada de Rede</h1>
-        <nav class="top-nav">
-            <ul>
-                <li><a href="index.html">Introdução</a></li>
-                <li><a href="fundamentos.html">Fundamentos da Segurança em Rede</a></li>
-                <li><a href="arquitetura.html">Arquitetura</a></li>
-                <li><a href="modos.html">Modos de Operação</a></li>
-                <li><a href="protocolos.html">Protocolos AH & ESP</a></li>
-                <li><a href="ikev2.html">IKEv2</a></li>
-                <li><a href="implementacoes.html">Implementações</a></li>
-                <li><a href="conclusao.html">Conclusão</a></li>
-            </ul>
-        </nav>
-    </header>
+		<div class="page-container">
+			<aside class="side-toc">
+				<h2>Nesta Página</h2>
+				<nav>
+					<ul>
+						<li>
+							<a href="#modelos-implantacao"
+								>Modelos de Implantação</a
+							>
+						</li>
+						<li>
+							<a href="#implantacao-hosts"
+								>Implementação em Hosts</a
+							>
+							<ul>
+								<li>
+									<a href="#host-os-integrated"
+										>Integrada ao S.O.</a
+									>
+								</li>
+								<li>
+									<a href="#host-bits"
+										>Bump-in-the-Stack (BITS)</a
+									>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<a href="#implantacao-gateways"
+								>Implementação em Gateways</a
+							>
+							<ul>
+								<li>
+									<a href="#gateway-nativa"
+										>Implementação Nativa</a
+									>
+								</li>
+								<li>
+									<a href="#gateway-bitw"
+										>Bump-in-the-Wire (BITW)</a
+									>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+			</aside>
 
-    <div class="page-container">
-        
-        <aside class="side-toc">
-            <h2>Nesta Página</h2>
-            <nav>
-                <ul>
-                    <li><a href="#secao1">Introdução da Página</a></li>
-                    <li><a href="#secao2">Primeiro Tópico</a></li>
-                    <li><a href="#secao3">Segundo Tópico</a></li>
-                    <li><a href="#secao4">Conclusão da Página</a></li>
-                </ul>
-            </nav>
-        </aside>
+			<main class="main-content">
+				<section id="modelos-implantacao">
+					<h1>
+						Modelos de Implantação do IPsec: Onde a Segurança Reside
+					</h1>
+					<p>
+						O IPsec pode ser implementado e implantado tanto nos
+						hosts finais (os dispositivos que originam e consomem os
+						dados) quanto em gateways/roteadores intermediários, ou
+						em ambos. A escolha de onde implantar o IPsec na rede
+						depende diretamente dos requisitos de segurança e da
+						arquitetura desejada.
+					</p>
+					<p>
+						Implementar o IPsec em hosts é ideal quando se busca
+						segurança fim-a-fim. Por outro lado, quando a segurança
+						é necessária apenas sobre um segmento específico da rede
+						– como proteger a comunicação entre matriz e filiais
+						através da internet (VPNs), ou criar Intranets e
+						Extranets seguras – a implementação em roteadores ou
+						gateways é mais apropriada.
+					</p>
+				</section>
 
-        <main class="main-content">
-            
-            <section id="secao1">
-                <h2>Título da Seção 1</h2>
-                <p>Este é um parágrafo de exemplo. O texto do seu trabalho virá aqui...</p>
-                <p>Outro parágrafo...</p>
-            </section>
-            
-            <section id="secao2">
-                <h2>Título da Seção 2</h2>
-                <p>Mais conteúdo aqui...</p>
-                <pre><code>
-/* Blocos de código ou diagramas ASCII 
-   podem ser colocados dentro de tags <pre> e <code> */
-+-----------------+
-|   Diagrama      |
-+-----------------+
-                </code></pre>
-            </section>
+				<hr />
 
-            <section id="secao3">
-                <h2>Título da Seção 3</h2>
-                <p>...</p>
-            </section>
+				<section id="implantacao-hosts">
+					<h2>Implementação em Hosts (Endpoints)</h2>
+					<p>
+						Consideramos "host" o dispositivo onde o pacote de dados
+						é originalmente criado. Implementar o IPsec diretamente
+						no host oferece vantagens significativas:
+					</p>
+					<ul>
+						<li>
+							<strong>Segurança Fim-a-Fim Verdadeira:</strong> A
+							proteção é aplicada desde a origem até o destino
+							final dos dados.
+						</li>
+						<li>
+							<strong>Suporte a Todos os Modos:</strong>
+							Capacidade de implementar tanto o Modo Transporte
+							quanto o Modo Túnel.
+						</li>
+						<li>
+							<strong>Segurança Granular (por Fluxo):</strong>
+							Habilidade de aplicar políticas de segurança
+							específicas para diferentes fluxos de dados ou
+							aplicações.
+						</li>
+						<li>
+							<strong>Contexto do Usuário:</strong> Possibilidade
+							de usar o contexto do usuário autenticado no sistema
+							para estabelecer conexões IPsec.
+						</li>
+					</ul>
+					<p>
+						Existem duas abordagens principais para a implementação
+						em hosts:
+					</p>
 
-            <section id="secao4">
-                <h2>Título da Seção 4</h2>
-                <p>...</p>
-            </section>
+					<h3 id="host-os-integrated">
+						Integrada ao Sistema Operacional (OS-integrated)
+					</h3>
+                    <img src="img/" alt="host-os-integrated">
 
-        </main>
-    </div>
+					<p>
+						Esta é a forma mais comum e eficiente de implementação
+						hoje. O IPsec é um protocolo da camada de rede e, nesta
+						abordagem, ele é integrado diretamente como parte da
+						pilha de protocolos do sistema operacional (ex: Windows,
+						Linux, macOS, *BSD).
+					</p>
+					<div class="placeholder-imagem">
+						[INSERIR IMAGEM: Figura 4.2 - Camadas da pilha IPsec
+						integrada ao S.O.]
+					</div>
+					<h4>Vantagens da Integração com o S.O.:</h4>
+					<ul>
+						<li>
+							<strong>Eficiência:</strong> A integração profunda
+							com a camada de rede permite que o IPsec utilize
+							serviços do sistema operacional, como fragmentação,
+							descoberta de Path MTU (PMTU) e informações de
+							contexto de sockets, resultando em uma implementação
+							eficiente.
+						</li>
+						<li>
+							<strong>Segurança por Fluxo Detalhada:</strong>
+							Facilita a aplicação de políticas de segurança
+							granulares para fluxos específicos (ex: uma
+							transação web), pois o gerenciamento de chaves, os
+							protocolos IPsec e a camada de rede podem ser
+							integrados de forma transparente.
+						</li>
+						<li>
+							<strong>Suporte Completo:</strong> Todos os modos e
+							funcionalidades do IPsec são geralmente suportados.
+						</li>
+					</ul>
 
-</body>
+					<h3 id="host-bits">
+						Bump-in-the-Stack (BITS) - Abordagem Legada/Específica
+					</h3>
+					<p>
+						Nesta abordagem, o IPsec é implementado como um "shim" –
+						uma camada de software intermediária – inserida entre a
+						camada de rede (IP) e a camada de enlace (drivers de
+						dispositivo) da pilha de protocolos.
+					</p>
+					<div class="placeholder-imagem">
+						[INSERIR IMAGEM: Figura 4.3 - Camadas da pilha IPsec
+						BITS]
+					</div>
+					<p>
+						O principal atrativo histórico do BITS era permitir que
+						fornecedores de soluções de segurança (como clientes VPN
+						ou firewalls pessoais) oferecessem funcionalidades IPsec
+						avançadas sem depender das implementações nativas dos
+						sistemas operacionais, que poderiam ser limitadas ou
+						inexistentes na época.
+					</p>
+					<h4>Desvantagens do BITS:</h4>
+					<ul>
+						<li>
+							<strong>Duplicação de Esforço:</strong> Exige que a
+							implementação BITS replique muitas funcionalidades
+							da camada de rede, como fragmentação e tabelas de
+							roteamento, o que leva a complicações.
+						</li>
+						<li>
+							<strong
+								>Complexidade no Tratamento de
+								Problemas:</strong
+							>
+							Dificulta o manejo de questões como PMTU e
+							roteamento.
+						</li>
+						<li>
+							<strong>Contexto Atual:</strong> Hoje, com o IPsec
+							amplamente integrado e maduro nos principais
+							sistemas operacionais, a abordagem BITS tornou-se
+							rara e é considerada legada para a maioria dos casos
+							de uso.
+						</li>
+					</ul>
+				</section>
+
+				<hr />
+
+				<section id="implantacao-gateways">
+					<h2>
+						Implementação em Gateways de Segurança
+						(Roteadores/Firewalls)
+					</h2>
+					<p>
+						A implementação em roteadores ou firewalls permite
+						proteger o tráfego que passa através desses
+						dispositivos, geralmente para proteger um segmento
+						inteiro de rede. Por exemplo, uma organização pode
+						querer proteger apenas o tráfego destinado a filiais
+						geograficamente distribuídas que atravessa a Internet,
+						usando túneis IPsec entre seus gateways.
+					</p>
+					<h4>Vantagens da Implementação em Gateways:</h4>
+					<ul>
+						<li>
+							<strong>Segurança de Perímetro:</strong> Protege o
+							tráfego entre duas redes através de uma rede pública
+							(como a Internet), formando VPNs.
+						</li>
+						<li>
+							<strong>Controle de Acesso:</strong> Permite
+							autenticar e autorizar usuários ou outras redes que
+							tentam acessar a rede privada, um pilar para VPNs de
+							acesso remoto e intranets seguras.
+						</li>
+					</ul>
+					<p>Existem duas abordagens principais:</p>
+
+					<h3 id="gateway-nativa">
+						Implementação Nativa (Integrada ao Dispositivo)
+					</h3>
+					<p>
+						Análoga à integração com o S.O. em hosts, aqui o IPsec é
+						uma parte integral do software (firmware) do roteador ou
+						firewall.
+					</p>
+                    <img src="img/native-implementation.png" alt="gateway-nativa", style="width: 50%; height: auto;">
+					<p>
+						Esta é a abordagem mais comum para gateways modernos,
+						oferecendo gerenciamento centralizado e, frequentemente,
+						otimizações de performance.
+					</p>
+
+					<h3 id="gateway-bitw">
+						Bump-in-the-Wire (BITW) - Dispositivo
+						Dedicado/Especializado
+					</h3>
+					<p>
+						Análogo ao BITS para hosts, o BITW envolve um
+						dispositivo de hardware separado, dedicado à
+						funcionalidade IPsec, que é fisicamente conectado "no
+						fio" a uma interface de um roteador (que pode ou não ter
+						IPsec nativo). Este dispositivo intercepta e processa os
+						pacotes.
+					</p>
+                    <img src="img/bitw-implementation.png" alt="gateway-nativa", style="width: 50%; height: auto;">
+				</section>
+			</main>
+		</div>
+	</body>
 </html>

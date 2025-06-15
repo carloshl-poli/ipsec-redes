@@ -111,9 +111,9 @@ p {
 
 /* ---- ESTILO PARA CÓDIGO E DIAGRAMAS ASCII ---- */
 pre {
-    background-color: var(--code-bg);
-    padding: 1rem;
-    border-radius: 5px;
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
     white-space: pre-wrap; /* Quebra linha em blocos de código grandes */
     overflow-x: auto;
 }

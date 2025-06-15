@@ -1,75 +1,775 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPsec: Título da Página</title>
-    <link rel="stylesheet" href="estilo.css">
-</head>
-<body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>IPsec: Título da Página</title>
+		<link rel="stylesheet" href="estilo.css" />
+	</head>
+	<body>
+		<header class="main-header">
+			<h1>IPsec: Segurança na Camada de Rede</h1>
+			<nav class="top-nav">
+				<ul>
+					<li><a href="index.html">Introdução</a></li>
+					<li>
+						<a href="fundamentos.html"
+							>Fundamentos da Segurança em Rede</a
+						>
+					</li>
+					<li><a href="arquitetura.html">Arquitetura</a></li>
+					<li><a href="modos.html">Modos de Operação</a></li>
+					<li><a href="protocolos.html">Protocolos AH & ESP</a></li>
+					<li><a href="ikev2.html">IKEv2</a></li>
+					<li><a href="implementacoes.html">Implementações</a></li>
+					<li><a href="conclusao.html">Conclusão</a></li>
+				</ul>
+			</nav>
+		</header>
 
-    <header class="main-header">
-        <h1>IPsec: Segurança na Camada de Rede</h1>
-        <nav class="top-nav">
-            <ul>
-                <li><a href="index.html">Introdução</a></li>
-                <li><a href="fundamentos.html">Fundamentos da Segurança em Rede</a></li>
-                <li><a href="arquitetura.html">Arquitetura</a></li>
-                <li><a href="modos.html">Modos de Operação</a></li>
-                <li><a href="protocolos.html">Protocolos AH & ESP</a></li>
-                <li><a href="ikev2.html">IKEv2</a></li>
-                <li><a href="implementacoes.html">Implementações</a></li>
-                <li><a href="conclusao.html">Conclusão</a></li>
-            </ul>
-        </nav>
-    </header>
+		<div class="page-container">
+			<aside class="side-toc">
+				<h2>Nesta Página</h2>
+				<nav>
+					<ul>
+						<li>
+							<a href="#intro-arquitetura"
+								>Introdução à Arquitetura</a
+							>
+							<ul>
+								<li>
+									<a href="#separacao-responsabilidades"
+										>Separação de Responsabilidades</a
+									>
+								</li>
+								<li>
+									<a href="#gerenciamento-chaves-ikev2"
+										>Papel do IKEv2</a
+									>
+								</li>
+								<li>
+									<a href="#papel-politica"
+										>Papel da Política</a
+									>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<a href="#pilares"
+								>Os Pilares: Política e Associação</a
+							>
+						</li>
+						<li>
+							<a href="#politica-seguranca"
+								>A Política de Segurança (SP)</a
+							>
+							<ul>
+								<li><a href="#seletores">Seletores</a></li>
+								<li>
+									<a href="#gerenciamento-politica"
+										>Gerenciamento da Política</a
+									>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<a href="#associacao-seguranca"
+								>A Associação de Segurança (SA)</a
+							>
+							<ul>
+								<li>
+									<a href="#anatomia-sa"
+										>Anatomia de uma SA</a
+									>
+								</li>
+								<li>
+									<a href="#ciclo-vida-sa"
+										>Ciclo de Vida da SA</a
+									>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<a href="#fluxo-processamento"
+								>O Fluxo de Processamento</a
+							>
+							<ul>
+								<li>
+									<a href="#outbound"
+										>Processamento de Saída</a
+									>
+								</li>
+								<li>
+									<a href="#inbound"
+										>Processamento de Entrada</a
+									>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<a href="#desafios-operacionais"
+								>Desafios Operacionais</a
+							>
+							<ul>
+								<li>
+									<a href="#fragmentacao"
+										>Fragmentação e MTU</a
+									>
+								</li>
+								<li><a href="#icmp">Tratamento de ICMP</a></li>
+							</ul>
+						</li>
+						<li><a href="#conclusao-arquitetura">Conclusão</a></li>
+					</ul>
+				</nav>
+			</aside>
 
-    <div class="page-container">
-        
-        <aside class="side-toc">
-            <h2>Nesta Página</h2>
-            <nav>
-                <ul>
-                    <li><a href="#secao1">Introdução da Página</a></li>
-                    <li><a href="#secao2">Primeiro Tópico</a></li>
-                    <li><a href="#secao3">Segundo Tópico</a></li>
-                    <li><a href="#secao4">Conclusão da Página</a></li>
-                </ul>
-            </nav>
-        </aside>
+			<main class="main-content">
+				<section id="intro-arquitetura">
+					<h2>Arquitetura IPsec: Um Ecossistema de Protocolos</h2>
+          <img
+						src="img/Arquitetura.png"
+						alt="Arquitetura"
+						,
+						style="width: 70%; height: auto"
+					/>
+					<p>
+						O IPsec não é um protocolo monolítico, mas sim uma suíte
+						de tecnologias projetadas para trabalhar em conjunto.
+						Para compreender seu funcionamento, é crucial entender
+						não apenas cada protocolo isoladamente, mas como eles
+						interagem e se integram para construir o framework de
+						segurança descrito pela Arquitetura IPsec.
+					</p>
+					<p>
+						A Arquitetura, em si, não especifica detalhes de baixo
+						nível como os formatos de cabeçalho. Em vez disso, ela
+						define as capacidades que um sistema (seja um host ou um
+						gateway) deve oferecer e a semântica das interações
+						entre os componentes. Por exemplo, a arquitetura dita
+						que o sistema deve ser capaz de prover confidencialidade
+						(usando ESP) e integridade (usando AH ou ESP), mas
+						delega os detalhes da implementação para documentos
+						específicos.
+					</p>
 
-        <main class="main-content">
-            
-            <section id="secao1">
-                <h2>Título da Seção 1</h2>
-                <p>Este é um parágrafo de exemplo. O texto do seu trabalho virá aqui...</p>
-                <p>Outro parágrafo...</p>
-            </section>
-            
-            <section id="secao2">
-                <h2>Título da Seção 2</h2>
-                <p>Mais conteúdo aqui...</p>
-                <pre><code>
-/* Blocos de código ou diagramas ASCII 
-   podem ser colocados dentro de tags <pre> e <code> */
-+-----------------+
-|   Diagrama      |
-+-----------------+
-                </code></pre>
-            </section>
+					<h4>A Separação de Responsabilidades</h4>
+					<p>
+						Uma das características mais poderosas da arquitetura
+						IPsec é sua modularidade. Essa separação de
+						responsabilidades garante que o framework seja flexível
+						e possa evoluir ao longo do tempo. As principais
+						divisões são:
+					</p>
+					<ul>
+						<li>
+							<strong
+								>Arquitetura vs. Protocolos (AH e ESP):</strong
+							>
+							Enquanto a arquitetura define o que deve ser feito,
+							os documentos do AH (Authentication Header) e do ESP
+							(Encapsulating Security Payload) definem como isso é
+							feito, especificando o formato exato dos protocolos,
+							os serviços que eles provêm e as regras de
+							processamento de pacotes.
+						</li>
+						<li>
+							<strong>Protocolos vs. Transformações:</strong> Os
+							documentos do AH e ESP, por sua vez, não definem os
+							algoritmos criptográficos a serem usados. Essa
+							função cabe às Transformações (Transforms). Uma
+							transformação define em detalhes a operação de
+							segurança aplicada aos dados, incluindo o algoritmo
+							(ex: AES-GCM, ChaCha-20), o tamanho das chaves, como
+							elas são derivadas e qualquer outra informação
+							específica. Essa separação permite que novas
+							transformações sejam adicionadas à medida que
+							algoritmos antigos se tornam inseguros, sem que seja
+							necessário modificar os protocolos base (AH e ESP).
+						</li>
+					</ul>
 
-            <section id="secao3">
-                <h2>Título da Seção 3</h2>
-                <p>...</p>
-            </section>
+					<h4>Gerenciamento de Chaves: O Papel do IKEv2</h4>
+					<p>
+						A tarefa de autenticar participantes, negociar
+						parâmetros de segurança e gerar chaves secretas de forma
+						automática é delegada a um componente essencial da
+						suíte: o IKEv2 (Internet Key Exchange version 2).
+					</p>
+					<p>
+						Mantendo o princípio da modularidade da arquitetura, o
+						IKEv2 opera como um protocolo de plano de controle, cuja
+						única função é construir e manter as Associações de
+						Segurança (SAs). Ele é distinto dos protocolos de plano
+						de dados, como o AH e o ESP, que utilizam as SAs criadas
+						pelo IKEv2 para efetivamente proteger os pacotes. Em
+						essência, enquanto AH e ESP são os "soldados" que
+						protegem o tráfego, o IKEv2 é o "engenheiro" que
+						constrói o túnel seguro por onde esse tráfego passará.
+					</p>
 
-            <section id="secao4">
-                <h2>Título da Seção 4</h2>
-                <p>...</p>
-            </section>
+					<h4>O Papel Crítico da Política</h4>
+					<p>
+						Finalmente, um componente que governa todo o framework é
+						a Política de Segurança. A política é o conjunto de
+						regras que determina se duas entidades podem se
+						comunicar e, em caso afirmativo, quais transformações e
+						protocolos devem ser usados. Uma política mal
+						configurada pode impedir completamente a comunicação
+						entre dois sistemas. Embora no passado a configuração de
+						políticas não fosse padronizada, hoje ela é uma parte
+						central e bem estabelecida de qualquer implementação de
+						IPsec.
+					</p>
+					<p>
+						Com este mapa da arquitetura em mente, podemos agora
+						aprofundar nos seus componentes lógicos centrais: a Base
+						de Dados de Políticas de Segurança (SPD) e a Base de
+						Dados de Associações de Segurança (SAD).
+					</p>
+				</section>
 
-        </main>
-    </div>
+				<hr />
 
-</body>
+				<section id="pilares">
+					<h3>Os Pilares da Arquitetura: Política e Associação</h3>
+					<p>
+						A arquitetura do IPsec, em seu núcleo, é governada por
+						dois componentes lógicos: a Política de Segurança (SP) e
+						a Associação de Segurança (SA). Se imaginarmos o IPsec
+						como um sistema de controle de acesso, a Política de
+						Segurança é o conjunto de regras que define o que deve
+						ser protegido, enquanto a Associação de Segurança é o
+						que diz como fazer a proteção de um pacote.
+					</p>
+				</section>
+
+				<section id="politica-seguranca">
+					<h2>A Política de Segurança (SP): O Cérebro do IPsec</h2>
+					<p>
+						A Política de Segurança é o componente que efetivamente
+						determina quais protocolos (AH ou ESP), modos e
+						algoritmos devem ser usados para cada tipo de pacote.
+						Todas as implementações do IPsec armazenam essas
+						políticas em um banco de dados chamado SPD (Security
+						Policy Database).
+					</p>
+					<p>
+						Para cada pacote, seja ele de entrada ou saída, a SPD é
+						consultada para determinar seu tratamento. Uma política,
+						em sua essência, mapeia um determinado tipo de tráfego a
+						uma ação específica. As três ações possíveis são:
+					</p>
+					<ul>
+						<li>
+							<strong>DISCARD:</strong> Esta ação bloqueia o
+							pacote imediatamente, sem qualquer processamento
+							adicional. É usada para implementar políticas de
+							bloqueio explícitas (semelhante a um firewall) ou
+							para proibir tráfego de origens conhecidamente
+							maliciosas.
+						</li>
+						<li>
+							<strong>BYPASS:</strong> Esta ação instrui o sistema
+							a não aplicar qualquer proteção do IPsec ao pacote.
+							O tráfego segue seu fluxo normal pela pilha de
+							protocolos, em texto claro. É utilizada para tráfego
+							que não necessita de segurança (como DNS para um
+							servidor local) ou para tráfego que não pode ser
+							protegido, como as próprias mensagens do IKEv2
+							usadas para negociar as chaves.
+						</li>
+						<li>
+							<strong>PROTECT:</strong> Esta é a ação que
+							efetivamente ativa o IPsec. Ela determina que o
+							pacote deve ser protegido usando os serviços de uma
+							ou mais Associações de Segurança (SAs). No tráfego
+							de saída, o pacote será encapsulado com ESP ou AH.
+							No tráfego de entrada, ele será decapsulado e
+							verificado.
+						</li>
+					</ul>
+
+					<h4>Seletores: Como a Política Identifica o Tráfego</h4>
+					<p>
+						A SPD funciona como uma lista de regras, onde cada regra
+						é associada a um conjunto de Seletores. São esses
+						seletores que permitem ao sistema identificar e
+						classificar os pacotes. Se um pacote corresponde aos
+						seletores de uma política, as regras dessa política são
+						aplicadas a ele.
+					</p>
+					<p>
+						Os seletores são extraídos dos cabeçalhos das camadas de
+						rede e transporte e podem ser: Endereço de origem,
+						Protocolo da Camada de Transporte ou Portas, entre
+						outros.
+					</p>
+
+					<h4>Gerenciamento da Política</h4>
+					<p>
+						A SPD precisa de uma interface de gerenciamento para
+						permitir que administradores possam adicionar, modificar
+						e remover políticas. Padrões de automação de rede como
+						NETCONF/YANG são frequentemente utilizados para
+						configurar políticas de segurança de forma padronizada
+						em roteadores e firewalls de diferentes fabricantes.
+					</p>
+					<p>
+						Com a Política de Segurança e seus seletores definidos,
+						o próximo passo é entender o "contrato" que executa a
+						proteção: a Associação de Segurança (SA).
+					</p>
+				</section>
+
+				<section id="associacao-seguranca">
+					<h2>
+						A Associação de Segurança (SA): O Contrato de Proteção
+					</h2>
+					<p>
+						Quando a decisão da política é proteger o tráfego, ela
+						aciona o uso de uma Associação de Segurança. A SA,
+						mantida na SAD (Security Association Database), é o
+						acordo técnico entre as duas partes da comunicação. É
+						este "contrato" que especifica os detalhes operacionais:
+						o protocolo exato, os algoritmos de transformação, as
+						chaves criptográficas e a duração de sua validade.
+					</p>
+					<p>
+						Uma característica fundamental das SAs é que elas são
+						unidirecionais (simplex) e específicas por protocolo.
+						Isso significa que, para uma comunicação segura e
+						bidirecional usando ESP, por exemplo, cada ponta da
+						comunicação manterá duas SAs: uma para o tráfego de
+						saída e outra para o de entrada. Se AH e ESP fossem
+						usados simultaneamente, seriam necessárias SAs separadas
+						para cada protocolo, ou seja, seriam necessários 4
+						canais distintos de comunicação.
+					</p>
+
+					<h3>A Anatomia de uma SA</h3>
+					<p>
+						Para que a Associação de Segurança (SA) cumpra seu papel
+						de "contrato" técnico, ela é estruturada como um
+						registro que contém um conjunto de parâmetros bem
+						definidos. São esses parâmetros que, juntos, fornecem
+						todas as informações necessárias para que um sistema
+						saiba exatamente como proteger e verificar os pacotes de
+						um fluxo de dados específico. Dentre esses componentes,
+						o mais fundamental para o processamento de pacotes é o
+						seu identificador único: o Security Parameter Index
+						(SPI).
+					</p>
+
+					<h4>O Security Parameter Index (SPI)</h4>
+					<p>
+						Dentro da anatomia de uma Associação de Segurança (SA),
+						o Security Parameter Index (SPI) é o elemento mais
+						importante para o processamento de pacotes. Trata-se de
+						um número de 32 bits que funciona como um "rótulo" ou
+						"etiqueta de identificação" para a SA.
+					</p>
+					<blockquote>
+						<h4>
+							O Problema: Como o Receptor Identifica a SA Correta?
+						</h4>
+						<p>
+							Para entender a necessidade do SPI, considere o
+							fluxo de dados:
+						</p>
+						<ul>
+							<li>
+								<strong>O Remetente:</strong> Para enviar um
+								pacote, o host de origem consulta sua SPD
+								(Security Policy Database) usando os Seletores
+								(IPs, portas, etc.) para encontrar a política
+								correta. Essa política aponta para a SA de saída
+								na SAD (Security Association Database). O
+								sistema então usa os parâmetros dessa SA
+								(algoritmos, chaves) para proteger o pacote.
+							</li>
+							<li>
+								<strong>O Receptor:</strong> O pacote chega
+								protegido. O receptor precisa encontrar a SA de
+								entrada correspondente para poder verificá-lo e
+								decifrá-lo.
+							</li>
+						</ul>
+						<p>
+							Aqui surge o problema: o receptor não pode usar os
+							mesmos Seletores (como as portas TCP/UDP) para
+							encontrar a SA correta, pois essas informações podem
+							estar criptografadas dentro do payload do ESP,
+							inacessíveis para uma primeira análise.
+						</p>
+
+						<h4>A Solução: O SPI como Etiqueta Externa</h4>
+						<p>
+							Para resolver isso de forma eficiente, o SPI é
+							inserido no cabeçalho do protocolo IPsec (seja AH ou
+							ESP), ficando sempre visível. Ele funciona como uma
+							etiqueta externa que diz ao receptor: "Para
+							processar este pacote, use o contrato número X".
+						</p>
+						<p>
+							O receptor então usa uma combinação de três
+							informações para fazer uma busca extremamente rápida
+							em sua SAD e encontrar a SA exata:
+						</p>
+						<ul>
+							<li>
+								O SPI contido no cabeçalho do pacote recebido.
+							</li>
+							<li>
+								O Endereço de Destino (o seu próprio endereço
+								IP).
+							</li>
+							<li>
+								O Protocolo de Segurança (indicando se é um
+								pacote AH ou ESP).
+							</li>
+						</ul>
+						<p>
+							Essa tupla &lt;SPI, Endereço de Destino,
+							Protocolo&gt; garante a identificação única da SA
+							correta.
+						</p>
+					</blockquote>
+					<h4>Quem Garante a Unicidade do SPI?</h4>
+					<p>
+						Um ponto crucial é que o valor do SPI é sempre escolhido
+						pelo receptor da SA. Durante a negociação com o IKEv2, o
+						Host B informa ao Host A qual valor de SPI ele deve usar
+						nos pacotes que enviar. Da mesma forma, o Host A informa
+						ao Host B qual SPI usar na direção oposta.
+					</p>
+					<p>
+						É responsabilidade de cada sistema garantir que os SPIs
+						que ele aloca sejam únicos para um determinado protocolo
+						(AH ou ESP) e endereço de destino. Se essa unicidade não
+						for garantida, o receptor poderá usar a SA errada (com
+						chaves e algoritmos incorretos), resultando em falhas de
+						segurança. Uma vez que uma SA expira, seu SPI pode ser
+						reutilizado para uma nova SA no futuro.
+					</p>
+
+					<h3>O Ciclo de Vida de uma SA (Gerenciamento)</h3>
+					<p>
+						Como citado antes, uma SA não é permanente; ela possui
+						um ciclo de vida que é gerenciado através de sua criação
+						e exclusão.
+					</p>
+
+					<h4>Criação de SAs</h4>
+					<p>
+						A criação de uma SA, em geral, é criada da seguinte
+						forma: Quando a SPD (Política de Segurança) determina
+						que um pacote precisa de proteção e não existe uma SA
+						válida, o sistema invoca o IKEv2. O IKEv2 então negocia
+						automaticamente todos os parâmetros com o outro par,
+						gera chaves secretas frescas e seguras, e instala a SA
+						em ambos os lados da comunicação.
+					</p>
+
+					<h4>Exclusão e Rekeying (Renovação de Chaves)</h4>
+					<p>
+						As SAs são projetadas para serem temporárias, sendo
+						excluídas por diversas razões, como:
+					</p>
+					<ul>
+						<li>
+							O tempo de vida (definido em tempo ou volume de
+							dados) expirou.
+						</li>
+						<li>Suspeita de que as chaves foram comprometidas.</li>
+						<li>Um dos pares solicita o término da SA.</li>
+					</ul>
+					<p>
+						Para manter a segurança, as chaves criptográficas devem
+						ser renovadas periodicamente. O IPsec não "atualiza" a
+						chave de uma SA existente. Em vez disso, ele realiza um
+						processo chamado rekeying (ou rechaveamento).
+					</p>
+					<p>
+						O IKEv2 também é responsável por esse processo. De forma
+						inteligente, ele inicia a negociação de uma nova SA um
+						pouco antes da SA atual expirar. Uma vez que a nova SA
+						está pronta e instalada, o tráfego passa a fluir por
+						ela, e só então a SA antiga é removida. Este princípio,
+						conhecido como "make-before-break" (criar antes de
+						quebrar), garante que não haja interrupção na
+						comunicação durante a transição, tornando o processo de
+						renovação de chaves transparente para o usuário.
+					</p>
+				</section>
+
+				<hr />
+
+				<section id="fluxo-processamento">
+					<h3>O Fluxo de Processamento do IPsec</h3>
+					<p>
+						Agora que entendemos os dois pilares da arquitetura – a
+						SPD que decide e a SAD que contém os "contratos" (SAs) –
+						podemos unir esses conceitos para entender a jornada de
+						um pacote através do framework IPsec. O processo é
+						dividido em duas operações distintas: o processamento de
+						saída e o de entrada.
+					</p>
+
+					<h4>Processamento de Saída (Outbound)</h4>
+					<p>
+						Este é o fluxo para um pacote que está saindo do seu
+						sistema:
+					</p>
+          <img
+						src="img/outbound.png"
+						alt="Outbound"
+						,
+						style="width: 70%; height: auto"
+					/>
+					<ol>
+						<li>
+							<strong>Consulta à Política:</strong> Um pacote
+							gerado por uma aplicação desce pela pilha de
+							protocolos e chega à camada de rede. Antes de ser
+							enviado, ele é interceptado pelo IPsec e sua
+							informação (IPs, portas, etc.) é usada para
+							consultar a SPD.
+						</li>
+						<li>
+							<strong>Decisão da SPD:</strong> Com base nos
+							seletores do pacote, a SPD determina uma de três
+							ações:
+							<ul>
+								<li>
+									<em>DISCARD (Descartar):</em> O pacote é
+									imediatamente descartado e não é enviado.
+								</li>
+								<li>
+									<em>BYPASS (Ignorar):</em> O IPsec não é
+									aplicado. O pacote segue seu fluxo normal e
+									é enviado em texto claro.
+								</li>
+								<li>
+									<em>PROTECT (Proteger):</em> O IPsec deve
+									ser aplicado. O sistema prossegue para o
+									próximo passo.
+								</li>
+							</ul>
+						</li>
+						<li>
+							<strong>Aplicação da Segurança:</strong> Se a ação
+							for PROTECT, o sistema precisa de uma SA.
+							<ul>
+								<li>
+									<em>Caso A (SA já existe):</em> A SPD aponta
+									para a SA correspondente na SAD. Os
+									parâmetros dessa SA (algoritmos, chaves) são
+									usados para proteger o pacote, adicionando
+									os cabeçalhos AH ou ESP.
+								</li>
+								<li>
+									<em>Caso B (SA não existe):</em> O pacote é
+									colocado em espera. O sistema invoca o IKEv2
+									para negociar uma nova SA com o destino.
+									Apenas após a criação bem-sucedida da SA é
+									que o pacote é protegido e enviado.
+								</li>
+							</ul>
+						</li>
+						<li>
+							<strong>Envio:</strong> O pacote, agora protegido
+							(ou em texto claro, no caso de bypass), é finalmente
+							enviado para a rede.
+						</li>
+					</ol>
+
+					<h4>Processamento de Entrada (Inbound)</h4>
+					<p>
+						O fluxo de entrada é um pouco mais complexo, pois o
+						sistema precisa primeiro identificar o tipo de pacote
+						que está recebendo.
+					</p>
+          <img
+						src="img/inbound.png"
+						alt="Inbound"
+						,
+						style="width: 90%; height: auto"
+					/>
+
+					<p>
+						<strong
+							>Cenário 1: Pacote IP Comum (Sem cabeçalho
+							IPsec)</strong
+						>
+					</p>
+					<ol>
+						<li>
+							O pacote é recebido e, por não ter cabeçalhos IPsec,
+							é imediatamente verificado contra a SPD.
+						</li>
+						<li>
+							A SPD toma uma decisão:
+							<ul>
+								<li>
+									<em>DISCARD:</em> O pacote é descartado.
+								</li>
+								<li>
+									<em>BYPASS:</em> A política permite a
+									entrada deste tráfego não protegido. O
+									pacote é passado para as camadas superiores
+									(TCP/UDP).
+								</li>
+								<li>
+									<em>PROTECT:</em> Este é um erro de
+									política. A SPD esperava um pacote
+									protegido, mas recebeu um em texto claro.
+									Por segurança, o pacote é descartado.
+								</li>
+							</ul>
+						</li>
+					</ol>
+
+					<p>
+						<strong
+							>Cenário 2: Pacote IPsec (Com cabeçalho AH ou
+							ESP)</strong
+						>
+					</p>
+					<ol>
+						<li>
+							Identificação da SA: O sistema identifica o pacote
+							como IPsec. Ele extrai a tupla &lt;SPI, Endereço de
+							Destino, Protocolo&gt; do cabeçalho.
+						</li>
+						<li>
+							Busca na SAD: A tupla é usada para encontrar a SA
+							correspondente na SAD. Se nenhuma SA for encontrada,
+							o pacote é descartado.
+						</li>
+						<li>
+							Verificação de Segurança: Usando os parâmetros da SA
+							encontrada (chaves, algoritmos), o sistema processa
+							o pacote: ele verifica o hash de integridade e/ou
+							decifra o conteúdo. Se qualquer uma dessas
+							verificações falhar, o pacote é descartado.
+						</li>
+						<li>
+							Validação da Política (Verificação Reversa): Após o
+							pacote ser "desembrulhado" e seu conteúdo original
+							revelado, ele passa por uma verificação final contra
+							a SPD. Este passo garante que a proteção que ele
+							recebeu condiz com a proteção que a política exigia.
+							Isso previne ataques onde um agressor tenta forçar o
+							uso de uma proteção mais fraca do que a definida. Se
+							a validação falhar, o pacote é descartado.
+						</li>
+						<li>
+							Entrega: Se todas as verificações passarem, os
+							cabeçalhos IPsec são removidos e o pacote original é
+							entregue à camada superior para processamento.
+						</li>
+					</ol>
+				</section>
+
+				<hr />
+
+				<section id="desafios-operacionais">
+					<h2>Desafios Operacionais da Arquitetura</h2>
+					<p>
+						Além do fluxo principal de processamento, a arquitetura
+						do IPsec precisa lidar com realidades práticas da
+						comunicação em redes IP para funcionar de forma robusta.
+						Duas das mais importantes são a fragmentação de pacotes
+						e o tratamento de mensagens de erro ICMP.
+					</p>
+
+					<h3>Fragmentação e o MTU</h3>
+					<p>
+						Uma regra fundamental do IPsec é que ele, por si só, não
+						fragmenta nem remonta pacotes. Essa é uma tarefa da
+						camada IP. No entanto, o IPsec influencia diretamente
+						esse processo.
+					</p>
+					<ul>
+						<li>
+							<strong>O Problema:</strong> Ao adicionar seus
+							próprios cabeçalhos (AH ou ESP), o IPsec aumenta o
+							tamanho do pacote original. Se o pacote final
+							exceder a MTU (Maximum Transmission Unit) de um link
+							no caminho até o destino, a fragmentação será
+							inevitável.
+						</li>
+						<li>
+							<strong>A Prática Recomendada:</strong> A abordagem
+							mais segura e eficiente é conhecida como
+							"fragment-before-encrypt" (fragmentar antes de
+							criptografar). A implementação do IPsec deve
+							participar da descoberta da PMTU (Path MTU) para
+							saber o tamanho máximo do pacote que pode enviar.
+							Com essa informação, o sistema pode fragmentar o
+							pacote original antes de aplicar a proteção IPsec.
+							Isso evita problemas de desempenho e segurança que
+							podem surgir ao se fragmentar um pacote que já está
+							criptografado.
+						</li>
+					</ul>
+
+					<h3>O Tratamento de Mensagens ICMP</h3>
+					<p>
+						O ICMP (Internet Control Message Protocol) é vital para
+						o diagnóstico e a operação da rede. O IPsec,
+						especialmente em modo túnel, pode complicar o seu
+						funcionamento.
+					</p>
+					<ul>
+						<li>
+							<strong>O Problema:</strong> O desafio surge
+							principalmente em modo túnel, quando um gateway
+							intermediário encapsula o pacote. Se um roteador na
+							internet precisar enviar uma mensagem de erro ICMP
+							(como "Host Inacessível") de volta, essa mensagem
+							será destinada ao gateway (o endereço do cabeçalho
+							externo). O ICMP, por padrão, inclui apenas uma
+							pequena parte do pacote original que causou o erro.
+							Por causa do encapsulamento, essa pequena parte
+							conterá apenas o cabeçalho externo, não o cabeçalho
+							interno com o endereço do host que realmente
+							originou o tráfego. Com isso, o gateway recebe uma
+							mensagem de erro sem saber para qual de seus hosts
+							internos ela se destina.
+						</li>
+						<li>
+							<strong>A Solução (em alto nível):</strong> Para
+							contornar isso, as implementações de IPsec precisam
+							manter estados adicionais que permitam mapear as
+							mensagens ICMP recebidas de volta para as conexões
+							internas corretas, garantindo que os erros de rede
+							possam ser devidamente diagnosticados.
+						</li>
+					</ul>
+				</section>
+
+				<hr />
+
+				<section id="conclusao-arquitetura">
+					<h2>Conclusão</h2>
+					<p>
+						Em resumo, a arquitetura do IPsec opera com base na
+						interação fundamental entre a SPD, que define a política
+						de segurança para cada pacote, e a SAD, que armazena os
+						detalhes técnicos da proteção nas Associações de
+						Segurança (SAs). Essa estrutura, que separa a decisão da
+						execução, é o que confere ao IPsec sua flexibilidade e
+						poder.
+					</p>
+					<p>
+						Agora que entendemos como essa estrutura gerencia a
+						segurança, vamos analisar os modos em que o IPsec pode
+						operar: o modo Transporte e o modo Túnel.
+					</p>
+				</section>
+			</main>
+		</div>
+	</body>
 </html>

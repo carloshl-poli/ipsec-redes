@@ -12,7 +12,11 @@
 			<nav class="top-nav">
 				<ul>
 					<li><a href="index.html">Introdução</a></li>
-                    <li><a href="fundamentos.html">Fundamentos da Segurança em Rede</a></li>
+					<li>
+						<a href="fundamentos.html"
+							>Fundamentos da Segurança em Rede</a
+						>
+					</li>
 					<li><a href="arquitetura.html">Arquitetura</a></li>
 					<li><a href="modos.html">Modos de Operação</a></li>
 					<li><a href="protocolos.html">Protocolos AH & ESP</a></li>
@@ -121,8 +125,10 @@
 					que todo o tráfego TCP/UDP entre eles seja protegido.
 				</p>
 				<img
-					src="img/transport-mode.png"
-					alt="Hosts with transport ESP"
+					src="img/transport-mode-illustration.png"
+					alt="transport-mode-illustration"
+					,
+					style="width: 70%; height: auto"
 				/>
 				<p>
 					A razão para essa limitação é que os roteadores na internet
@@ -136,18 +142,25 @@
 				<p>
 					Para visualizar o impacto do Modo Transporte, compare a
 					estrutura de um pacote TCP/IP comum com a de um pacote
-					protegido com ESP:
+					protegido com IPsec:
 				</p>
 				<p><b>Pacote TCP/IP Padrão:</b></p>
-				<p>[ Cabeçalho IP ] [ Cabeçalho TCP ] [ Dados da Aplicação ]</p>
-				<p><b>Pacote Protegido com ESP em Modo Transporte:</b></p>
+				<img
+					src="img/IP-TCP-packets.png"
+					alt="IP-TCP-packets"
+					,
+					style="width: 60%; height: auto"
+				/>
+				<p><b>Pacote Protegido com IPsec em Modo Transporte:</b></p>
+				<img
+					src="img/transport-mode-packets.png"
+					alt="transport-mode-packets"
+					,
+					style="width: 80%; height: auto"
+				/>
 				<p>
-					[ Cabeçalho IP ] [ Cabeçalho ESP ] [ Cabeçalho TCP ] [ Dados
-					da Aplicação ]
-				</p>
-				<p>
-					Como se pode ver, o cabeçalho ESP é inserido para proteger o
-					segmento TCP e os dados, enquanto o cabeçalho IP original
+					Como se pode ver, o cabeçalho IPsec é inserido para proteger
+					o segmento TCP e os dados, enquanto o cabeçalho IP original
 					permanece intacto e exposto.
 				</p>
 				<h4>Vantagens e Desvantagens</h4>
@@ -178,31 +191,36 @@
 					roteador é quem provê IPsec ao contrário de um Host.
 				</p>
 				<img
-					src="https://placehold.co/715x233/2a2a2a/999999?text=Estrutura de Pacote em Modo Tunel"
-					alt="Estrutura de Pacote em Modo Túnel"
+					src="img/tunnel-mode-illustration.png"
+					alt="tunnel-mode-illustration"
+					,
+					style="width: 70%; height: auto"
 				/>
 				<h4 id="estrutura-do-pacote-tunel">Estrutura do Pacote</h4>
 				<p>
 					Para visualizar o impacto do Modo Tunel, compare a estrutura
 					de um pacote TCP/IP comum com a de um pacote protegido com
-					ESP:
+					IPsec:
 				</p>
 				<p><b>Pacote TCP/IP Padrão:</b></p>
-				<p>[ Cabeçalho IP ] [ Cabeçalho TCP ] [ Dados da Aplicação ]</p>
-				<p><b>Pacote Protegido com ESP em Modo Transporte:</b></p>
+				<img
+					src="img/IP-TCP-packets.png"
+					alt="IP-TCP-packets"
+					,
+					style="width: 60%; height: auto"
+				/>
+				<p><b>Pacote Protegido com IPsec em Modo Tunel:</b></p>
+				<img
+					src="img/tunnel-mod-packets.png"
+					alt="tunnel-mod-packets"
+					,
+					style="width: 100%; height: auto"
+				/>
 				<p>
-					[ Cabeçalho IP ] [ Cabeçalho ESP ] [ Cabeçalho TCP ] [ Dados
-					da Aplicação ]
-				</p>
-				<p><b>Pacote Protegido com ESP em Modo Tunel:</b></p>
-				<p>
-					[Cabeçalho Novo IP] [ Cabeçalho ESP ] [ Cabeçalho IP
-					Original] [ Cabeçalho TCP ] [ Dados da Aplicação ]
-				</p>
-				<p>
-					Como se pode ver, dessa vez o cabeçalho ESP é inserido para
-					proteger <b>todo o datagrama original</b> ao invés de apenas
-					os dados (como é feito no modo transporte).
+					Como se pode ver, dessa vez o cabeçalho IPsec é inserido
+					para proteger <b>todo o datagrama original</b> ao invés de
+					apenas os dados (como é feito no modo transporte). E um novo
+					cabeçalho IP encapsula o pacote IPsec para enviar à rede.
 				</p>
 				<h3>Caso de Uso Principal: VPNs Gateway-to-Gateway</h3>
 				<p>
@@ -212,10 +230,6 @@
 					como um "gateway", provendo os serviços do IPsec em nome de
 					todos os hosts da rede que ele protege.
 				</p>
-				<img
-					src="https://placehold.co/715x233/2a2a2a/999999?text=Cenario Gateway-to-Gateway (VPN)"
-					alt="Cenário Gateway-to-Gateway (VPN)"
-				/>
 				<p>
 					Neste caso, o Host A envia um pacote normal para o Host B. O
 					roteador RA intercepta esse pacote, o encapsula usando IPsec

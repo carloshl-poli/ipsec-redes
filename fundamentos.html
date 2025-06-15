@@ -12,7 +12,11 @@
 			<nav class="top-nav">
 				<ul>
 					<li><a href="index.html">Introdução</a></li>
-					<li><a href="fundamentos.html">Fundamentos da Segurança em Rede</a></li>
+					<li>
+						<a href="fundamentos.html"
+							>Fundamentos da Segurança em Rede</a
+						>
+					</li>
 					<li><a href="arquitetura.html">Arquitetura</a></li>
 					<li><a href="modos.html">Modos de Operação</a></li>
 					<li><a href="protocolos.html">Protocolos AH & ESP</a></li>
@@ -103,8 +107,7 @@
 						<li>
 							<strong>Conceitos de Segurança Avançada</strong> —
 							Abordam noções mais sofisticadas, como Perfect
-							Forward Secrecy e formas de mitigar ataques de
-							negação de serviço.
+							Forward Secrecy.
 						</li>
 					</ul>
 					<p>
@@ -196,13 +199,81 @@
 						<code>x</code> original é considerado computacionalmente
 						inviável.
 					</p>
+
+					<p>
+						Uma boa analogia para entender funções de mão única é a
+						de uma árvore binária completa:
+					</p>
+					<ul>
+						<li>
+							<strong>Folhas:</strong> representam todas as
+							entradas possíveis da função.
+						</li>
+						<li>
+							<strong>Caminho da folha até a raiz:</strong>
+							representa o processo de aplicar a função.
+							<ul>
+								<li>
+									Seguir esse caminho é fácil e rápido — basta
+									seguir os ponteiros dos nós até o topo.
+								</li>
+								<li>
+									Esse processo tem complexidade baixa (O(log
+									n)), pois o número de passos cresce
+									logaritmicamente com o número de folhas.
+								</li>
+							</ul>
+						</li>
+						<li>
+							<strong>Caminho da raiz até a folha:</strong>
+							representa o processo inverso — descobrir a entrada
+							original a partir da saída.
+							<ul>
+								<li>
+									A raiz pode ter vindo de muitas folhas
+									diferentes.
+								</li>
+								<li>
+									Para descobrir qual folha gerou aquela raiz,
+									é necessário explorar toda a árvore.
+								</li>
+								<li>
+									Esse processo pode levar tempo exponencial,
+									pois o número de possibilidades cresce
+									rapidamente.
+								</li>
+							</ul>
+						</li>
+					</ul>
+					<img
+						src="img/trapdoor-tree.png"
+						alt="trapdoor-tree"
+						,
+						style="width: 70%; height: auto"
+					/>
+					<p>
+						Esse comportamento é semelhante ao das funções de mão
+						única: fáceis de calcular, mas difíceis de inverter.
+					</p>
+					<p>
+						Algumas dessas funções têm uma característica especial
+						chamada <strong>trapdoor</strong> (ou porta dos fundos):
+						uma informação secreta que permite inverter a função de
+						forma rápida e eficiente.
+					</p>
+					<p>
+						Usando a analogia anterior, é como se alguém tivesse um
+						<strong>mapa secreto</strong> que mostra exatamente qual
+						folha leva até a raiz — enquanto todos os outros
+						precisam explorar a árvore inteira às cegas.
+					</p>
+
 					<blockquote>
 						<p>
 							Funções de mão única e
-							<strong>trapdoors</strong> (uma informação secreta
-							que permite inverter a função facilmente) são a base
-							para a criação de um canal de transmissão seguro em
-							um meio potencialmente inseguro como a internet.
+							<strong>trapdoors</strong> são a base para a criação
+							de um canal de transmissão seguro em um meio
+							potencialmente inseguro como a internet.
 						</p>
 					</blockquote>
 
@@ -212,103 +283,439 @@
 						criptografia: ela transforma dados legíveis em uma
 						versão ilegível por meio de um processo matemático, com
 						o objetivo de protegê-los contra acessos não
-						autorizados. De forma geral, uma cifra é composta por
-						duas funções complementares: Criptografar e
-						Decriptografar, que dependem do uso de uma chave.
+						autorizados.
 					</p>
+					<p>
+						De forma geral, uma cifra é composta por duas funções
+						complementares:
+					</p>
+					<ul>
+						<li>
+							<b>Criptografar: </b>transforma uma mensagem
+							original, combinada com uma chave, em uma mensagem
+							cifrada (ou criptografada).
+						</li>
+						<li>
+							<b>Descriptografar: </b>utiliza a chave para
+							transformar a mensagem cifrada de volta à sua forma
+							original.
+						</li>
+					</ul>
+					<p>Essas funções podem ser representadas assim:</p>
 					<pre><code>mensagem_cifrada = criptografar(mensagem_original, chave)
 mensagem_original = decriptografar(mensagem_cifrada, chave)</code></pre>
 					<p>
-						Cifras são essenciais para garantir a
-						<strong>confidencialidade</strong> das informações. Elas
-						podem ser classificadas em dois tipos, de acordo com o
-						gerenciamento de suas chaves:
+						O funcionamento correto da cifra depende da chave
+						utilizada. Sem a chave apropriada, a mensagem cifrada
+						deve permanecer incompreensível para qualquer pessoa que
+						tente acessá-la.
 					</p>
+					<p>
+						Cifras são essenciais para garantir a
+						<strong>confidencialidade</strong> das informações,
+						impedindo que pessoas não autorizadas possam compreender
+						os dados, mesmo que consigam interceptá-los.
+					</p>
+					<p>
+						Cifras podem ser classificadas quanto à relação das
+						chaves para codificar e decodificar a mensagem: cifras
+						simétricas e cifras assimétricas.
+					</p>
+
 					<h4>Cifras Simétricas</h4>
 					<p>
 						Utilizam a <strong>mesma chave</strong> tanto para
 						criptografar quanto para descriptografar uma mensagem.
-						São muito eficientes e adequadas para grandes volumes de
-						dados, mas seu principal desafio é o compartilhamento
-						seguro dessa chave única entre as partes.
+						sso significa que, para que duas partes se comuniquem
+						com segurança, ambas devem ter acesso prévio a essa
+						chave secreta — e protegê-la com cuidado.
+					</p>
+					<p>
+						O processo é eficiente e bem adequado para criptografar
+						grandes volumes de dados.
+					</p>
+					<p>
+						O principal desafio das cifras simétricas não é a
+						criptografia em si, mas o compartilhamento seguro da
+						chave entre as partes envolvidas.
 					</p>
 					<h4>Cifras Assimétricas</h4>
 					<p>
-						Operam com um
-						<strong>par de chaves</strong> matematicamente
-						relacionadas: uma <strong>chave pública</strong> (para
-						criptografar) e uma <strong>chave privada</strong> (para
-						decriptografar). Permitem que qualquer pessoa envie uma
-						mensagem segura para o dono da chave privada, usando
-						apenas sua chave pública. Seu desafio é o alto custo
-						computacional, sendo mais lentas que as cifras
-						simétricas.
+						Enquanto cifras simétricas utilizam uma única chave
+						secreta compartilhada entre as partes, cifras
+						assimétricas operam com um par de chaves distintas,
+						porém matematicamente relacionadas: uma chave pública e
+						uma chave privada.
+					</p>
+					<p>
+						A ideia central é que uma das chaves (geralmente a
+						pública) seja usada para criptografar, e a outra (a
+						privada) para decriptografar. Isso permite que qualquer
+						pessoa envie mensagens cifradas para o dono da chave
+						privada, sem que precise conhecer esse segredo —
+						bastando ter acesso à chave pública.
+					</p>
+					<p>
+						O funcionamento seguro desse tipo de cifra se apoia
+						diretamente nas
+						<strong>funções de mão única com trapdoor</strong>,
+						apresentadas anteriormente. A operação de cifragem é
+						fácil de executar (como subir pela árvore da analogia),
+						mas a operação inversa — descobrir o dado original —
+						seria inviável sem o conhecimento da <em>trapdoor</em>,
+						ou seja, da <strong>chave privada</strong>. É essa
+						assimetria que torna possível o uso seguro da
+						<strong>chave pública</strong> por qualquer um, sem
+						comprometer a confidencialidade dos dados.
 					</p>
 
+					<p>
+						Cifras assimétricas são fundamentais em contextos onde
+						não há troca prévia de segredos, como nas conexões
+						seguras pela internet. Elas são, portanto, uma
+						peça-chave em protocolos como o <strong>IPsec</strong>,
+						especialmente no processo de estabelecimento inicial de
+						confiança entre as partes.
+					</p>
+
+					<p>
+						O principal desafio das cifras assimétricas não é o
+						compartilhamento de chaves, mas sim o seu
+						<strong>custo computacional</strong>. Elas envolvem
+						operações matematicamente complexas e, por isso, são
+						muito mais lentas do que cifras simétricas. Por essa
+						razão, são inviáveis para transmitir grandes volumes de
+						dados.
+					</p>
 					<h3 id="troca-chaves">
 						Troca de Chaves (Diffie-Hellman / ECDH)
 					</h3>
 					<p>
-						Como usar a eficiência das cifras simétricas se o
-						compartilhamento da chave é um problema? O protocolo de
-						<strong>Diffie-Hellman</strong> resolve isso: ele
-						permite que duas partes construam, juntas, uma chave
-						secreta compartilhada, mesmo se comunicando por um canal
-						completamente inseguro, sem nunca transmitir a chave
-						diretamente.
+						Como vimos, cifras simétricas são muito eficientes para
+						criptografar grandes volumes de dados — mas exigem que
+						ambas as partes compartilhem uma mesma chave secreta. Em
+						contextos como a internet, onde os dados passam por
+						canais potencialmente inseguros, surge uma pergunta
+						fundamental:
 					</p>
-					<p>
-						Uma variação moderna e mais eficiente é o
-						<strong>Elliptic Curve Diffie-Hellman (ECDH)</strong>,
-						que atinge o mesmo objetivo com chaves menores e maior
-						segurança, sendo amplamente utilizado no IPsec.
-					</p>
+
 					<blockquote>
-						<p>
-							A principal limitação do Diffie-Hellman "puro" é que
-							ele não garante autenticidade, o que o torna
-							vulnerável a ataques Man-in-the-Middle (MITM).
-						</p>
+						<strong
+							>Como combinar o desempenho das cifras simétricas
+							com a segurança necessária para trocar essa chave
+							sem que ninguém mais tenha acesso a ela?</strong
+						>
 					</blockquote>
+
+					<p>
+						É aí que entra o
+						<strong>protocolo de Diffie-Hellman</strong>: um método
+						engenhoso para que duas partes construam, juntas, uma
+						chave secreta compartilhada, mesmo se comunicando por um
+						canal completamente inseguro.
+					</p>
+
+					<h4>Exemplo com Alice, João e Jéssica</h4>
+
+					<p>
+						Imagine que <strong>Alice</strong> e
+						<strong>João</strong> queiram trocar mensagens
+						confidenciais usando uma cifra simétrica. Mas primeiro,
+						eles precisam de uma chave secreta comum. O problema é
+						que toda a comunicação entre eles passa pela internet,
+						onde alguém como <strong>Jéssica</strong>, uma
+						observadora mal-intencionada, pode interceptar tudo o
+						que é enviado.
+					</p>
+
+					<p>
+						Com o protocolo Diffie-Hellman, mesmo que Jéssica veja
+						todas as mensagens, ela não conseguirá descobrir a chave
+						final. Veja como funciona:
+					</p>
+                    <img
+						src="img/Diffie-Hellman.png"
+						alt="trapdoor-tree"
+						,
+						style="width: 90%; height: auto"
+					/>
+
+					<ol>
+						<li>
+							<strong>Parâmetros públicos:</strong> Alice e João
+							combinam dois valores públicos:
+							<ul>
+								<li>Um número primo grande: <code>p</code></li>
+								<li>Uma base (gerador): <code>g</code></li>
+							</ul>
+							Esses valores podem ser vistos por qualquer um,
+							inclusive Jéssica.
+						</li>
+
+						<li>
+							<strong>Segredos individuais:</strong> Cada um
+							escolhe um número secreto:
+							<ul>
+								<li>Alice escolhe <code>a</code></li>
+								<li>João escolhe <code>b</code></li>
+							</ul>
+						</li>
+
+						<li>
+							<strong
+								>Cálculo dos valores públicos
+								individuais:</strong
+							>
+							Usando <code>g</code> e <code>p</code>, cada um
+							calcula um valor que será enviado ao outro:
+							<ul>
+								<li>
+									Alice calcula:
+									<code>A = g<sup>a</sup> mod p</code>
+								</li>
+								<li>
+									João calcula:
+									<code>B = g<sup>b</sup> mod p</code>
+								</li>
+							</ul>
+							Esses valores <code>A</code> e <code>B</code> são
+							enviados publicamente. Jéssica pode vê-los, mas não
+							conhece <code>a</code> nem <code>b</code>.
+						</li>
+
+						<li>
+							<strong>Cálculo da chave compartilhada:</strong>
+							Cada um usa o valor que recebeu e o próprio segredo
+							para calcular a mesma chave:
+							<ul>
+								<li>
+									Alice faz:
+									<code>K = B<sup>a</sup> mod p</code>
+								</li>
+								<li>
+									João faz:
+									<code>K = A<sup>b</sup> mod p</code>
+								</li>
+							</ul>
+							Pela propriedade matemática:
+							<pre>
+(g<sup>b</sup>)<sup>a</sup> mod p = g<sup>ab</sup> mod p
+(g<sup>a</sup>)<sup>b</sup> mod p = g<sup>ab</sup> mod p
+            </pre
+							>
+							Ou seja, ambos obtêm exatamente o mesmo valor
+							<code>K</code>, sem nunca terem enviado diretamente
+							essa chave!
+						</li>
+
+						<li>
+							<strong>E Jéssica?</strong> Mesmo que Jéssica tenha
+							acesso a <code>g</code>, <code>p</code>,
+							<code>A</code> e <code>B</code>, ela não consegue
+							calcular <code>K</code>, pois isso exigiria
+							descobrir <code>a</code> ou <code>b</code> — algo
+							considerado computacionalmente inviável com os
+							parâmetros certos (problema do logaritmo discreto).
+						</li>
+					</ol>
+
+					<p>
+						Ao final desse processo, Alice e João compartilham uma
+						chave secreta, construída a partir de valores públicos,
+						mas que só eles conhecem. Agora, eles podem usar essa
+						chave para aplicar uma cifra simétrica e trocar
+						mensagens seguras, mesmo passando por um canal
+						totalmente exposto.
+					</p>
+
+					<p>
+						A beleza do <strong>Diffie-Hellman</strong> é que ele
+						elimina a necessidade de transmitir a chave secreta
+						diretamente, resolvendo de forma elegante o maior
+						desafio das cifras simétricas: o
+						<strong>compartilhamento seguro da chave</strong>.
+					</p>
+
+					<p>
+						Uma variação moderna e mais eficiente do protocolo é o
+						<strong>Elliptic Curve Diffie-Hellman (ECDH)</strong>,
+						que utiliza <em>curvas elípticas</em> para alcançar o
+						mesmo objetivo com chaves menores e maior segurança.
+						Esse método é amplamente utilizado em sistemas como o
+						<strong>IPsec</strong>, que protege a comunicação em
+						redes IP.
+					</p>
+
+					<p>
+						No entanto, o protocolo Diffie-Hellman possui uma
+						limitação importante: ele
+						<strong>não garante autenticidade</strong>. Ou seja, não
+						há nenhuma verificação de que Alice está realmente
+						falando com João — qualquer pessoa poderia fingir ser um
+						deles durante a troca de chaves. Isso abre espaço para o
+						chamado <em>ataque do homem no meio</em> (<strong
+							>Man-In-The-Middle — MITM</strong
+						>).
+					</p>
+
+					<p>
+						Nesse cenário, uma atacante como Jéssica pode
+						interceptar as mensagens e executar duas trocas
+						separadas de chave: uma com Alice e outra com João. Cada
+						um acreditará que está falando com o outro, mas, na
+						verdade, estarão se comunicando com Jéssica, que pode
+						ler, modificar ou até repassar as mensagens sem que
+						percebam.
+					</p>
 
 					<h3 id="hash-hmac-assinatura">
 						Funções Hash, HMAC e Assinatura Digital
 					</h3>
 					<h4>Funções Hash</h4>
 					<p>
-						Funções hash recebem uma entrada de qualquer tamanho e
-						produzem uma saída de tamanho fixo (um "resumo" ou
-						"impressão digital"). Mesmo uma pequena mudança na
-						entrada gera um hash completamente diferente. Elas
-						garantem a <strong>integridade</strong> dos dados, mas
-						não a autenticidade.
+						Funções hash são funções matemáticas que recebem uma
+						entrada de tamanho arbitrário (como uma mensagem, um
+						arquivo ou uma senha) e produzem uma saída de tamanho
+						fixo, chamada de <strong>resumo</strong> ou
+						<strong>hash</strong>. Esse resumo é como uma “impressão
+						digital” da entrada: mesmo uma pequena mudança na
+						mensagem original gera um hash completamente diferente.
+					</p>
+
+					<p>
+						Uma boa função hash deve possuir as seguintes
+						propriedades:
+					</p>
+					<ul>
+						<li>
+							<strong>Determinística</strong>: a mesma entrada
+							sempre gera o mesmo hash.
+						</li>
+						<li>
+							<strong>Irreversível</strong>: não é possível
+							recuperar a entrada original a partir do hash.
+						</li>
+						<li>
+							<strong>Resistente a colisões</strong>: é muito
+							difícil encontrar duas entradas diferentes que
+							produzam o mesmo hash.
+						</li>
+					</ul>
+
+					<p>
+						Essas propriedades permitem que funções hash sejam
+						usadas para garantir a <strong>integridade</strong> de
+						dados transmitidos. O processo funciona da seguinte
+						forma:
+					</p>
+
+					<ol>
+						<li>
+							O remetente calcula o hash da mensagem original.
+						</li>
+						<li>Esse hash é enviado junto com a mensagem.</li>
+						<li>
+							O destinatário, ao receber a mensagem, também
+							calcula o hash do conteúdo recebido.
+						</li>
+						<li>
+							Por fim, ele compara o hash calculado com o hash
+							enviado.
+						</li>
+					</ol>
+
+					<p>
+						Se os dois valores forem iguais, é muito provável que a
+						mensagem não foi alterada durante o envio. Se forem
+						diferentes, isso indica que a mensagem sofreu alguma
+						modificação no caminho.
+					</p>
+
+					<p>
+						<strong>Importante:</strong> embora funções hash
+						garantam integridade, elas
+						<strong>não garantem autenticidade</strong>. Um atacante
+						pode interceptar a mensagem, alterá-la e enviar um novo
+						hash correspondente. Por isso, mecanismos como o
+						<strong>HMAC</strong> são necessários para garantir que
+						o conteúdo veio realmente de quem diz ter enviado.
 					</p>
 					<h4>HMAC: Autenticando com Hashes</h4>
+
 					<p>
-						Para resolver a falta de autenticidade do hash, o
-						<strong
-							>HMAC (Hash-based Message Authentication
-							Code)</strong
-						>
-						combina a função hash com uma chave secreta. Somente
-						quem possui a chave pode gerar ou verificar o HMAC
-						corretamente, garantindo tanto a
+						Apesar de garantir a integridade dos dados, uma função
+						hash sozinha não garante autenticidade. Por exemplo, se
+						Alice envia o hash de uma mensagem para João, qualquer
+						pessoa poderia gerar um novo hash para outra mensagem.
+						Para resolver isso, é utilizado o
+						<strong>HMAC</strong> (Hash-based Message Authentication
+						Code).
+					</p>
+
+					<p>
+						O HMAC combina uma função hash com uma
+						<strong>chave secreta</strong>. Assim, somente quem
+						possui a chave pode gerar ou verificar o código HMAC
+						corretamente. Isso garante tanto a
 						<strong>integridade</strong> quanto a
 						<strong>autenticidade</strong> da mensagem.
 					</p>
-					<h4>Assinatura Digital e Certificados</h4>
+
 					<p>
-						Para cenários onde não há uma chave secreta
-						pré-compartilhada, a
-						<strong>assinatura digital</strong> é a solução. Usando
-						criptografia assimétrica, o remetente "assina" o hash da
-						mensagem com sua <strong>chave privada</strong>.
-						Qualquer pessoa pode verificar essa assinatura usando a
-						<strong>chave pública</strong> do remetente. Para
-						validar que uma chave pública realmente pertence a uma
-						entidade, usam-se
-						<strong>certificados digitais</strong>, emitidos por
-						Autoridades Certificadoras (CAs) confiáveis.
+						Em resumo, se Alice e João compartilham uma chave
+						secreta e Alice envia uma mensagem acompanhada de um
+						HMAC, João pode calcular o HMAC por conta própria e
+						verificar se bate com o que recebeu. Se sim, ele sabe
+						que a mensagem não foi alterada e que veio de alguém que
+						conhece a chave — presumivelmente, Alice.
+					</p>
+
+					<h4>Assinatura Digital e Certificados</h4>
+
+					<p>
+						O HMAC exige uma chave secreta compartilhada
+						previamente. Mas em muitos casos — como em sites
+						acessados por navegador — isso não é viável. É aí que
+						entra a <strong>assinatura digital</strong>.
+					</p>
+
+					<p>
+						Assinaturas digitais usam
+						<strong>criptografia assimétrica</strong>. O emissor da
+						mensagem utiliza sua chave privada para gerar uma
+						assinatura baseada no hash da mensagem. Quem recebe a
+						mensagem pode usar a chave pública correspondente para
+						verificar se a assinatura é válida — ou seja, se foi
+						realmente gerada por quem diz ser o remetente e se a
+						mensagem não foi alterada.
+					</p>
+
+					<p>
+						Mas como ter certeza de que a chave pública realmente
+						pertence a quem diz? Para isso existem os
+						<strong>certificados digitais</strong>: documentos
+						assinados digitalmente por uma entidade confiável que
+						atesta que determinada chave pública pertence a uma
+						pessoa, organização ou site específico.
+					</p>
+
+					<p>
+						Esses certificados são emitidos por entidades chamadas
+						<strong>Autoridades Certificadoras</strong> (CA —
+						<em>Certificate Authorities</em>), como a Let's Encrypt,
+						DigiCert ou a ICP-Brasil. Elas são reconhecidas por
+						sistemas e navegadores, que confiam em suas assinaturas.
+						Assim, quando um navegador encontra um certificado
+						assinado por uma CA confiável, ele aceita que a chave
+						pública é autêntica.
+					</p>
+
+					<p>
+						Juntos, <strong>assinatura digital</strong> e
+						<strong>certificados digitais</strong> resolvem o
+						problema de autenticação em comunicações seguras — como
+						aquele que vimos na troca de chaves Diffie-Hellman, onde
+						havia o risco de um atacante se passar por outra pessoa.
 					</p>
 				</section>
 
@@ -316,23 +723,64 @@ mensagem_original = decriptografar(mensagem_cifrada, chave)</code></pre>
 
 				<section id="seguranca-avancada">
 					<h2>Elevando o Nível de Segurança</h2>
-					<h3 id="pfs">Perfect Forward Secrecy (PFS)</h3>
+
+					<h3>Perfect Forward Secrecy (PFS)</h3>
+
 					<p>
 						O <strong>Perfect Forward Secrecy (PFS)</strong> é uma
-						propriedade que garante que o comprometimento de uma
-						chave de longo prazo (como a chave privada de um
-						servidor) <strong>não</strong> comprometa a segurança de
-						sessões de comunicação passadas. Isso é alcançado
-						gerando chaves de sessão únicas e temporárias para cada
-						conexão (usando algoritmos como DHE ou ECDHE), que são
-						descartadas após o uso.
+						propriedade desejável em protocolos criptográficos que
+						garante que o comprometimento de uma chave de longo
+						prazo
+						<strong>não comprometa sessões anteriores</strong>.
 					</p>
+
 					<p>
-						Com PFS, mesmo que um atacante grave todo o tráfego por
-						anos e depois roube a chave privada do servidor, ele não
-						conseguirá decifrar as conversas antigas. Essa é uma
-						característica de segurança crucial para protocolos como
-						o IPsec.
+						Em protocolos que não oferecem PFS, se uma chave privada
+						for descoberta no futuro, todas as comunicações passadas
+						que foram interceptadas por um invasor podem ser
+						decriptadas retroativamente.
+					</p>
+
+					<p>
+						Já em sistemas com PFS, mesmo que a chave privada de
+						longo prazo seja comprometida, cada sessão anterior
+						continua protegida, pois:
+					</p>
+
+					<ul>
+						<li>
+							As chaves de sessão são temporárias e únicas para
+							cada conexão.
+						</li>
+						<li>
+							Elas são descartadas após o fim da sessão, não sendo
+							armazenadas.
+						</li>
+						<li>
+							São geradas usando algoritmos como o
+							<strong>Diffie-Hellman efêmero (DHE)</strong> ou o
+							<strong
+								>Elliptic Curve Diffie-Hellman efêmero
+								(ECDHE)</strong
+							>.
+						</li>
+					</ul>
+
+					<p>
+						Com isso, mesmo que um atacante armazene todos os dados
+						trafegados por anos, eles não conseguirão decifrá-los
+						futuramente caso obtenham uma chave estática, pois essas
+						chaves não permitem recuperar o segredo de sessões
+						passadas.
+					</p>
+
+					<p>
+						O PFS é especialmente importante em ambientes onde se
+						presume que adversários possam armazenar grandes volumes
+						de tráfego e tentar quebrar a segurança futuramente,
+						como em conexões <strong>HTTPS</strong>,
+						<strong>VPNs</strong> e
+						<strong>protocolos de segurança na internet</strong>.
 					</p>
 				</section>
 			</main>
